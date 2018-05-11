@@ -21,6 +21,24 @@
 
 using std::string;
 
+/*!
+ *  @brief  Expands shortened URLs
+ *
+ *  @param  url     URL to expand
+ *
+ *  @return Expanded URL
+ */
 const string expand(const string &url);
+
+/*!
+ *  @brief  Filters out tracking stuff
+ *  
+ *          Currently remoces all arguments beginning with `utm_`
+ *
+ *  @param  url     URL to filter
+ *
+ *  @return Filtered URL
+ */
+const string strip(const string &url);
 
 #endif  // EXPANDURL_MASTODON_HPP

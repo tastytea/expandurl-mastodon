@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <string>
+#include <regex>
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/Infos.hpp>
@@ -51,4 +52,10 @@ const string expand(const string &url)
     }
 
     return curlpp::infos::EffectiveUrl::get(request);
+}
+
+const string strip(const string &url)
+{
+    const std::regex re("[\\?&]utm_[^&]+");
+    return std::regex_replace(url, re, "");
 }

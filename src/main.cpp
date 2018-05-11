@@ -26,7 +26,8 @@ int main(int argc, char *argv[])
 {
     curlpp::initialize();
 
-    cout << expand(argv[1]) << '\n';
+    // cout << expand(argv[1]) << '\n';
+    cout << strip(argv[1]) << '\n';
 
     curlpp::Cleanup();
 
