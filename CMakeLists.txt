@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 project (expandurl-mastodon
-         VERSION 0.0.2
+         VERSION 0.1.0
          LANGUAGES CXX
 )
 
@@ -25,5 +25,5 @@ include_directories(${CURL_INCLUDE_DIR})
 
 file(GLOB sources src/*.cpp)
 add_executable(expandurl-mastodon ${sources})
-target_link_libraries(expandurl-mastodon mastodon-cpp curl curlpp)
+target_link_libraries(expandurl-mastodon jsoncpp mastodon-cpp curl curlpp pthread)
 install(TARGETS expandurl-mastodon DESTINATION ${CMAKE_INSTALL_BINDIR})

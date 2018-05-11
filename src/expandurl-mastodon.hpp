@@ -18,8 +18,23 @@
 #define EXPANDURL_MASTODON_HPP
 
 #include <string>
+#include <memory>
+#include <thread>
+#include <vector>
+#include <cstdint>
+#include <mastodon-cpp/mastodon-cpp.hpp>
+#include <mastodon-cpp/easy/all.hpp>
 
 using std::string;
+
+void signal_handler(int signum);
+/*!
+ *  @brief  Extract URLs from HTML
+ *
+ *  @return vector of URLs
+ */
+const std::vector<string> get_urls(const string &html);
+
 
 /*!
  *  @brief  Expands shortened URLs
@@ -33,12 +48,40 @@ const string expand(const string &url);
 /*!
  *  @brief  Filters out tracking stuff
  *  
- *          Currently remoces all arguments beginning with `utm_`
+ *          Currently removes all arguments beginning with `utm_`
  *
  *  @param  url     URL to filter
  *
  *  @return Filtered URL
  */
 const string strip(const string &url);
+
+
+class Listener
+{
+public:
+    Listener();
+
+    /*!
+     *  @brief  Starts listening on Mastodon
+     */
+    const bool start();
+    /*!
+     *  @brief  Stops listening on Mastodon
+     */
+    const void stop();
+
+    std::vector<Mastodon::Easy::Notification> get_new_messages();
+    Mastodon::Easy::Status get_status(const std::uint_fast64_t &id);
+    const bool send_reply(const Mastodon::Easy::Status &status,
+                          const string &message);
+
+private:
+    string _instance;
+    string _access_token;
+    string _stream;
+    std::unique_ptr<Mastodon::API::http> _ptr;
+    std::thread _thread;
+};
 
 #endif  // EXPANDURL_MASTODON_HPP

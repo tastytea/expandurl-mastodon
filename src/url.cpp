@@ -15,7 +15,7 @@
  */
 
 #include <iostream>
-#include <string>
+#include <sstream>
 #include <regex>
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Options.hpp>
@@ -30,7 +30,9 @@ namespace curlopts = curlpp::options;
 const string expand(const string &url)
 {
     curlpp::Easy request;
+    std::stringstream ss;
 
+    request.setOpt(curlopts::WriteStream(&ss));
     request.setOpt<curlopts::CustomRequest>("HEAD");
     request.setOpt<curlopts::Url>(url);
     request.setOpt<curlopts::UserAgent>

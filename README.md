@@ -1,5 +1,7 @@
 **expandurl-mastodon** is a Mastodon bot that expands a shortened URL.
 
+If you want the bot to expand an URL, reply to the post with the URL in it and
+mention the bot account (@expandurl@botsin.space for example).
 
 # Install
 
@@ -28,9 +30,14 @@ Install with `make install`.
 
 # Usage
 
-## Error codes
+You will need to generate an access token yourself at the moment. Create a
+config file with your account and access token in
+`${HOME}/.config/expandurl-mastodon.cfg`:
 
-Same as [mastodon-cpp](https://github.com/tastytea/mastodon-cpp/blob/master/README.md#error-codes)
+    expandurl@example.social
+    abc123
+
+Now start expandurl-mastodon without parameters.
 
 # Copyright
 
