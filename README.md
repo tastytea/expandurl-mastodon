@@ -1,7 +1,14 @@
 **expandurl-mastodon** is a Mastodon bot that expands a shortened URL.
 
 If you want the bot to expand an URL, reply to the post with the URL in it and
-mention the bot account (@expandurl@botsin.space for example).
+mention the bot account (`@expandurl@botsin.space` for example).
+
+This bot uses the same visibility as you, but posts unlisted instead of public.
+It retains the sensitive flag and spoiler warnings.
+
+Please report any bugs via the
+[issue tracker on GitHub](https://github.com/tastytea/expandurl-mastodon/issues)
+or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 
 # Install
 
