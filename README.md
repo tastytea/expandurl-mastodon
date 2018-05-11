@@ -11,7 +11,7 @@ mention the bot account (@expandurl@botsin.space for example).
  * C++ compiler (tested: gcc 6.4, clang 5.0)
  * [cmake](https://cmake.org/) (tested: 3.9.6)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.4)
- * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.12.0)
+ * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.12.1)
 
 ## Get sourcecode
 

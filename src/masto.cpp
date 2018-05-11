@@ -131,7 +131,7 @@ const bool Listener::send_reply(const Easy::Status &status,
     {
         { "in_reply_to_id", { id } },
         { "visibility", { strvisibility } },
-        { "status", { '@' + status.account().acct() + ' ' + message } }
+        { "status", { message } }
     };
 
     if (status.sensitive())

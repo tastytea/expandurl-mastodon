@@ -95,14 +95,24 @@ int main(int argc, char *argv[])
                 {
                     message += url + " \n";
                 }
-                if (listener.send_reply(notif.status(), message))
+                if (!message.empty())
                 {
-                    cout << "Sent reply: " << message;
+                    message = '@' + notif.status().account().acct() +
+                              ' ' + message;
+                    if (listener.send_reply(notif.status(), message))
+                    {
+                        cout << "Sent reply: " << message;
+                    }
+                    else
+                    {
+                        cerr << "ERROR: could not send reply to " <<
+                                notif.status().id() << '\n';
+                    }
                 }
                 else
                 {
-                    cerr << "ERROR: could not send reply to " <<
-                            notif.status().id() << '\n';
+                    listener.send_reply(notif.status(),
+                        "I couldn't find an URL in the message you replied to. 😞");
                 }
             }
         }
