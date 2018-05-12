@@ -26,6 +26,8 @@
 #include <mastodon-cpp/easy/all.hpp>
 
 using std::string;
+using Mastodon::API;
+using Mastodon::Easy;
 
 void signal_handler(int signum);
 /*!
@@ -71,16 +73,17 @@ public:
      */
     const void stop();
 
-    std::vector<Mastodon::Easy::Notification> get_new_messages();
-    Mastodon::Easy::Status get_status(const std::uint_fast64_t &id);
-    const bool send_reply(const Mastodon::Easy::Status &status,
-                          const string &message);
+    std::vector<Easy::Notification> get_new_messages();
+    Easy::Status get_status(const std::uint_fast64_t &id);
+    const bool send_reply(const Easy::Status &status, const string &message);
+    const std::uint_fast64_t get_parent_id(Easy::Notification &notif);
 
 private:
     string _instance;
     string _access_token;
+    std::unique_ptr<Easy> _masto;
     string _stream;
-    std::unique_ptr<Mastodon::API::http> _ptr;
+    std::unique_ptr<API::http> _ptr;
     std::thread _thread;
 };
 

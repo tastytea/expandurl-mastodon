@@ -1,4 +1,4 @@
-**expandurl-mastodon** is a Mastodon bot that expands a shortened URL.
+**expandurl-mastodon** is a Mastodon bot that expands shortened URLs.
 
 If you want the bot to expand an URL, reply to the post with the URL in it and
 mention the bot account (`@expandurl@botsin.space` for example).

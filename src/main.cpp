@@ -73,47 +73,49 @@ int main(int argc, char *argv[])
 
     while (running)
     {
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::this_thread::sleep_for(std::chrono::seconds(2));
 
         for (Easy::Notification &notif : listener.get_new_messages())
         {
-            const std::uint_fast64_t id = notif.status().in_reply_to_id();
+            cerr << "DEBUG: new messages\n";
+            const std::uint_fast64_t id = listener.get_parent_id(notif);
+            cerr << "DEBUG: in_reply_to_id: " << id << '\n';
             Easy::Status status;
+
             if (id > 0)
             {
                 status = listener.get_status(id);
-            }
-            else
-            {
-                listener.send_reply(notif.status(),
-                    "I couldn't find the message you replied to. 😞");
-            }
-            if (status.valid())
-            {
-                string message = "";
-                for (const string &url : get_urls(status.content()))
+                if (status.valid())
                 {
-                    message += url + " \n";
-                }
-                if (!message.empty())
-                {
-                    message = '@' + notif.status().account().acct() +
-                              ' ' + message;
-                    if (listener.send_reply(notif.status(), message))
+                    string message = "";
+                    for (const string &url : get_urls(status.content()))
                     {
-                        cout << "Sent reply: " << message;
+                        message += url + " \n";
+                    }
+                    if (!message.empty())
+                    {
+                        if (!listener.send_reply(notif.status(), message))
+                        {
+                            cerr << "FIXME!\n";
+                        }
                     }
                     else
                     {
-                        cerr << "ERROR: could not send reply to " <<
-                                notif.status().id() << '\n';
+                        listener.send_reply(notif.status(),
+                            "I couldn't find an URL in the message you "
+                            "replied to. 😞");
                     }
                 }
                 else
                 {
                     listener.send_reply(notif.status(),
-                        "I couldn't find an URL in the message you replied to. 😞");
+                        "I couldn't get the message you replied to. 😞");
                 }
+            }
+            else
+            {
+                listener.send_reply(notif.status(),
+                    "It seems that you didn't reply to a message?");
             }
         }
     }

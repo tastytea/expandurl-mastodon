@@ -22,14 +22,14 @@
 
 using std::cerr;
 using std::string;
-using Mastodon::Easy;
 
 Listener::Listener()
 : _instance("")
 , _access_token("")
 , _stream("")
 , _ptr(nullptr)
-{}
+{
+}
 
 const bool Listener::start()
 {
@@ -43,6 +43,10 @@ const bool Listener::start()
         _instance = _instance.substr(_instance.find('@') + 1);
         std::getline(file, _access_token);
         file.close();
+
+        _masto = std::make_unique<Easy>(_instance, _access_token);
+        _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
+                              global::version);
     }
     else
     {
@@ -89,11 +93,11 @@ std::vector<Easy::Notification> Listener::get_new_messages()
 
 Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
 {
-    Easy masto(_instance, _access_token);
     std::uint_fast16_t ret;
     string answer;
 
-    ret = masto.get(Easy::v1::statuses_id, {{ "id", { std::to_string(id) }}}, answer);
+    ret = _masto->get(Easy::v1::statuses_id, {{ "id", { std::to_string(id) }}},
+                      answer);
     if (ret == 0)
     {
         return Easy::Status(answer);
@@ -108,7 +112,6 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
 const bool Listener::send_reply(const Easy::Status &status,
                                 const string &message)
 {
-    Easy masto(_instance, _access_token);
     std::uint_fast16_t ret;
     string answer;
     const string id = std::to_string(status.id());
@@ -131,7 +134,7 @@ const bool Listener::send_reply(const Easy::Status &status,
     {
         { "in_reply_to_id", { id } },
         { "visibility", { strvisibility } },
-        { "status", { message } }
+        { "status", { '@' + status.account().acct() + ' ' + message } }
     };
 
     if (status.sensitive())
@@ -144,14 +147,38 @@ const bool Listener::send_reply(const Easy::Status &status,
         parameters.insert({ "spoiler_text", { status.spoiler_text() } });
     }
 
-    ret = masto.post(Easy::v1::statuses, parameters, answer);
+    ret = _masto->post(Easy::v1::statuses, parameters, answer);
 
     if (ret == 0)
     {
+        cerr << "DEBUG: Sent reply: " << message << '\n';
         return true;
     }
     else
     {
+        cerr << "ERROR: could not send reply to " << id << '\n';
         return false;
     }
+}
+
+const std::uint_fast64_t Listener::get_parent_id(Easy::Notification &notif)
+{
+    string answer;
+    std::uint_fast16_t ret;
+
+    ret = _masto->get(API::v1::statuses_id,
+                      {{ "id", { std::to_string(notif.status().id()) }}},
+                      answer);
+
+    if (ret > 0)
+    {
+        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
+        return 0;
+    }
+    else
+    {
+        Easy::Status s(answer);
+        return s.in_reply_to_id();
+    }
+    return 0;
 }
