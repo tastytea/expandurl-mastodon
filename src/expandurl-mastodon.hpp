@@ -75,7 +75,7 @@ public:
 
     std::vector<Easy::Notification> get_new_messages();
     Easy::Status get_status(const std::uint_fast64_t &id);
-    const bool send_reply(const Easy::Status &status, const string &message);
+    const bool send_reply(const Easy::Status &to_status, const string &message);
     const std::uint_fast64_t get_parent_id(Easy::Notification &notif);
 
 private:

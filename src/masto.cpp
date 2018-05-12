@@ -96,7 +96,7 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
     std::uint_fast16_t ret;
     string answer;
 
-    ret = _masto->get(Easy::v1::statuses_id, {{ "id", { std::to_string(id) }}},
+    ret = _masto->get(API::v1::statuses_id, {{ "id", { std::to_string(id) }}},
                       answer);
     if (ret == 0)
     {
@@ -109,15 +109,15 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
     }
 }
 
-const bool Listener::send_reply(const Easy::Status &status,
+const bool Listener::send_reply(const Easy::Status &to_status,
                                 const string &message)
 {
     std::uint_fast16_t ret;
     string answer;
-    const string id = std::to_string(status.id());
+    const string id = std::to_string(to_status.id());
     string strvisibility;
 
-    switch (status.visibility())
+    switch (to_status.visibility())
     {
         case Easy::visibility_type::Private:
             strvisibility = "private";
@@ -134,20 +134,20 @@ const bool Listener::send_reply(const Easy::Status &status,
     {
         { "in_reply_to_id", { id } },
         { "visibility", { strvisibility } },
-        { "status", { '@' + status.account().acct() + ' ' + message } }
+        { "status", { '@' + to_status.account().acct() + ' ' + message } }
     };
 
-    if (status.sensitive())
+    if (to_status.sensitive())
     {
         parameters.insert({ "sensitive", { "true" } });
     }
 
-    if (!status.spoiler_text().empty())
+    if (!to_status.spoiler_text().empty())
     {
-        parameters.insert({ "spoiler_text", { status.spoiler_text() } });
+        parameters.insert({ "spoiler_text", { to_status.spoiler_text() } });
     }
 
-    ret = _masto->post(Easy::v1::statuses, parameters, answer);
+    ret = _masto->post(API::v1::statuses, parameters, answer);
 
     if (ret == 0)
     {
