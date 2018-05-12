@@ -7,7 +7,6 @@
 description="expandurl-mastodon - Mastodon bot that expands shortened URLs."
 pidfile="/var/run/expandurl-mastodon.pid"
 command="/usr/bin/expandurl-mastodon"
-command_args="-p ${pidfile} ${NTPD_OPTS}"
 start_stop_daemon_args="-b -m --pidfile ${pidfile} -u ${EXPANDURL_USER}"
 
 depend() {
@@ -15,8 +14,14 @@ depend() {
 }
 
 start_pre() {
-	if [ ! -f ${HOME}/.config/expandurl-mastodon.cfg ] ; then
-		eerror "Please create ${HOME}/.config/expandurl-mastodon.cfg"
+	local user_home="$(getent passwd ${EXPANDURL_USER} | cut -d: -f6)"
+	if [ -z ${user_home} ]; then
+		eerror "Home directory of \"${EXPANDURL_USER}\" not found"
+		return 1
+	fi
+
+	if [ ! -f ${user_home}/.config/expandurl-mastodon.cfg ] ; then
+		eerror "Please create ${user_home}/.config/expandurl-mastodon.cfg"
 		return 1
 	fi
 	return 0
