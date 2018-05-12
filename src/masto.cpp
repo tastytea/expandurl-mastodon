@@ -28,6 +28,7 @@ Listener::Listener()
 , _access_token("")
 , _stream("")
 , _ptr(nullptr)
+, _running(false)
 {
 }
 
@@ -56,10 +57,13 @@ const bool Listener::start()
 
     _thread = std::thread([=]
     {
+        _running = true;
         Easy masto(_instance, _access_token);
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
                             global::version);
         masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
+        cerr << "DEBUG: Connection lost.\n";
+        _running = false;
     });
 
     return true;
@@ -181,4 +185,9 @@ const std::uint_fast64_t Listener::get_parent_id(Easy::Notification &notif)
         return s.in_reply_to_id();
     }
     return 0;
+}
+
+const bool Listener::stillrunning() const
+{
+    return _running;
 }

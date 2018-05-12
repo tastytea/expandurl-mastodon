@@ -74,6 +74,11 @@ int main(int argc, char *argv[])
     while (running)
     {
         std::this_thread::sleep_for(std::chrono::seconds(2));
+        if (!listener.stillrunning())
+        {
+            cerr << "DEBUG: Reestablishing connection...\n";
+            listener.start();
+        }
 
         for (Easy::Notification &notif : listener.get_new_messages())
         {

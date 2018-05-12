@@ -78,6 +78,8 @@ public:
     const bool send_reply(const Easy::Status &to_status, const string &message);
     const std::uint_fast64_t get_parent_id(Easy::Notification &notif);
 
+    const bool stillrunning() const;
+
 private:
     string _instance;
     string _access_token;
@@ -85,6 +87,7 @@ private:
     string _stream;
     std::unique_ptr<API::http> _ptr;
     std::thread _thread;
+    bool _running;
 };
 
 #endif  // EXPANDURL_MASTODON_HPP
