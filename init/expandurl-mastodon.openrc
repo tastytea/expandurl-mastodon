@@ -1,0 +1,23 @@
+#!/sbin/openrc-run
+# Copyright 1999-2018 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+
+# You need to create /etc/conf.d/expandurl-mastodon with EXPANDURL_USER set.
+
+description="expandurl-mastodon - Mastodon bot that expands shortened URLs."
+pidfile="/var/run/expandurl-mastodon.pid"
+command="/usr/bin/expandurl-mastodon"
+command_args="-p ${pidfile} ${NTPD_OPTS}"
+start_stop_daemon_args="-b -m --pidfile ${pidfile} -u ${EXPANDURL_USER}"
+
+depend() {
+	use net dns logger
+}
+
+start_pre() {
+	if [ ! -f ${HOME}/.config/expandurl-mastodon.cfg ] ; then
+		eerror "Please create ${HOME}/.config/expandurl-mastodon.cfg"
+		return 1
+	fi
+	return 0
+}
