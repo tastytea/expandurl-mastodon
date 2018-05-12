@@ -21,6 +21,7 @@
 #include "expandurl-mastodon.hpp"
 
 using std::cerr;
+using std::cout;
 using std::string;
 
 Listener::Listener()
@@ -61,7 +62,7 @@ const void Listener::start()
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
                             global::version);
         masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
-        cerr << "DEBUG: Connection lost.\n";
+        cout << "DEBUG: Connection lost.\n";
         _running = false;
     });
 }
@@ -105,7 +106,7 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
     }
     else
     {
-        cerr << "ERROR: " << ret << '\n';
+        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
         return Easy::Status();
     }
 }
@@ -152,12 +153,12 @@ const bool Listener::send_reply(const Easy::Status &to_status,
 
     if (ret == 0)
     {
-        cerr << "DEBUG: Sent reply: " << message << '\n';
+        cout << "DEBUG: Sent reply: " << message << '\n';
         return true;
     }
     else
     {
-        cerr << "ERROR: could not send reply to " << id << '\n';
+        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
         return false;
     }
 }

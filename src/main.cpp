@@ -78,15 +78,15 @@ int main(int argc, char *argv[])
         std::this_thread::sleep_for(std::chrono::seconds(2));
         if (!listener.stillrunning())
         {
-            cerr << "DEBUG: Reestablishing connection...\n";
+            cout << "DEBUG: Reestablishing connection...\n";
             listener.start();
         }
 
         for (Easy::Notification &notif : listener.get_new_messages())
         {
-            cerr << "DEBUG: new messages\n";
+            cout << "DEBUG: new messages\n";
             const std::uint_fast64_t id = listener.get_parent_id(notif);
-            cerr << "DEBUG: in_reply_to_id: " << id << '\n';
+            cout << "DEBUG: in_reply_to_id: " << id << '\n';
             Easy::Status status;
 
             if (id > 0)
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
                     {
                         if (!listener.send_reply(notif.status(), message))
                         {
-                            cerr << "FIXME!\n";
+                            cerr << "ERROR: could not send reply to " << id << '\n';
                         }
                     }
                     else
