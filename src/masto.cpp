@@ -30,10 +30,6 @@ Listener::Listener()
 , _ptr(nullptr)
 , _running(false)
 {
-}
-
-const bool Listener::start()
-{
     const string filepath = static_cast<const string>(getenv("HOME")) +
                             "/.config/expandurl-mastodon.cfg";
     std::ifstream file(filepath);
@@ -52,9 +48,12 @@ const bool Listener::start()
     else
     {
         cerr << "ERROR: Could not open " << filepath << '\n';
-        return false;
+        exit(1);
     }
+}
 
+const void Listener::start()
+{
     _thread = std::thread([=]
     {
         _running = true;
@@ -65,8 +64,6 @@ const bool Listener::start()
         cerr << "DEBUG: Connection lost.\n";
         _running = false;
     });
-
-    return true;
 }
 
 const void Listener::stop()

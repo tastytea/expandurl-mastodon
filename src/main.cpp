@@ -33,6 +33,7 @@ void signal_handler(int signum)
     switch (signum)
     {
         case SIGINT:
+        case SIGTERM:
             if (!running)
             {
                 cout << "Forced close.\n";
@@ -66,6 +67,7 @@ const std::vector<string> get_urls(const string &html)
 int main(int argc, char *argv[])
 {
     signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
     curlpp::initialize();
 
     Listener listener;
@@ -124,8 +126,8 @@ int main(int argc, char *argv[])
             }
         }
     }
-    listener.stop();
 
+    listener.stop();
     curlpp::Cleanup();
 
     return 0;

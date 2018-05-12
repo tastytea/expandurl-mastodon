@@ -67,7 +67,7 @@ public:
     /*!
      *  @brief  Starts listening on Mastodon
      */
-    const bool start();
+    const void start();
     /*!
      *  @brief  Stops listening on Mastodon
      */
