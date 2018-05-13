@@ -5,7 +5,10 @@ project (expandurl-mastodon
 )
 
 include(GNUInstallDirs)
-include(FindCURL)
+find_package(CURL REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CURLPP REQUIRED curlpp)
+pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,16 +17,23 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR})
 
+include_directories(${CURL_INCLUDE_DIRS})
+include_directories(${CURLPP_INCLUDE_DIRS})
+include_directories(${JSONCPP_INCLUDE_DIRS})
+
+link_directories(${CURL_LIBRARY_DIRS})
+link_directories(${CURLPP_LIBRARY_DIRS})
+link_directories(${JSONCPP_LIBRARY_DIRS})
+
 # Write version in header
 configure_file (
     "${PROJECT_SOURCE_DIR}/src/version.hpp.in"
     "${PROJECT_BINARY_DIR}/version.hpp"
 )
 
-find_package(CURL REQUIRED)
-include_directories(${CURL_INCLUDE_DIR})
-
 file(GLOB sources src/*.cpp)
 add_executable(expandurl-mastodon ${sources})
-target_link_libraries(expandurl-mastodon jsoncpp mastodon-cpp curl curlpp pthread)
+target_link_libraries(expandurl-mastodon
+                      ${CURLPP_LIBRARIES} ${JSONCPP_LIBRARIES}
+                      mastodon-cpp pthread)
 install(TARGETS expandurl-mastodon DESTINATION ${CMAKE_INSTALL_BINDIR})
