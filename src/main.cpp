@@ -40,7 +40,7 @@ void signal_handler(int signum)
                 exit(signum);
             }
             running = false;
-            cout << "Closing program, this could take a few seconds...\n";
+            cout << "Closing, this could take a few seconds...\n";
             break;
         default:
             break;
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
     }
 
     listener.stop();
-    curlpp::Cleanup();
+    curlpp::terminate();
 
     return 0;
 }
