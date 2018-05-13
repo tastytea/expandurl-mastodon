@@ -5,7 +5,7 @@
 EAPI=6
 inherit git-r3 cmake-utils
 
-DESCRIPTION="Mastodon bot that expands a shortened URL."
+DESCRIPTION="Mastodon bot that expands shortened URLs."
 HOMEPAGE="https://github.com/tastytea/expandurl-mastodon"
 EGIT_REPO_URI="https://github.com/tastytea/expandurl-mastodon.git"
 LICENSE="GPL-3"

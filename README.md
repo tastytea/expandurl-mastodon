@@ -17,9 +17,9 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 ## Dependencies
 
  * Tested OS: Linux
- * C++ compiler (tested: gcc 6.4, clang 5.0)
+ * C++ compiler (tested: gcc 6.4)
  * [cmake](https://cmake.org/) (tested: 3.9.6)
- * [curlpp](http://www.curlpp.org/) (tested: 0.8.4)
+ * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
  * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.12.1)
 
 ## Get sourcecode
