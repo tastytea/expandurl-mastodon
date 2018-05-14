@@ -27,6 +27,23 @@ using std::cerr;
 using std::string;
 namespace curlopts = curlpp::options;
 
+const std::vector<string> get_urls(const string &html)
+{
+    const std::regex re_url("href=\"([^\"]+)\" rel");
+    std::smatch match;
+    string buffer = html;
+    std::vector<string> v;
+
+    while (std::regex_search(buffer, match, re_url))
+    {
+        string url = Easy::unescape_html(match[1].str());
+        v.push_back(strip(expand(url)));
+        buffer = match.suffix().str();
+    }
+
+    return v;
+}
+
 const string expand(const string &url)
 {
     curlpp::Easy request;

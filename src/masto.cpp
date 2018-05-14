@@ -74,6 +74,10 @@ const void Listener::stop()
         _ptr->cancel_stream();
         _thread.join();
     }
+    else
+    {
+        cout << "DEBUG: _ptr is false.\n";
+    }
 }
 
 std::vector<Easy::Notification> Listener::get_new_messages()

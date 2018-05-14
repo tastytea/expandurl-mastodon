@@ -30,13 +30,14 @@ using Mastodon::API;
 using Mastodon::Easy;
 
 void signal_handler(int signum);
+
+
 /*!
  *  @brief  Extract URLs from HTML
  *
  *  @return vector of URLs
  */
 const std::vector<string> get_urls(const string &html);
-
 
 /*!
  *  @brief  Expands shortened URLs
