@@ -82,15 +82,29 @@ const void Listener::stop()
 
 std::vector<Easy::Notification> Listener::get_new_messages()
 {
-    const string buffer = _stream;
-    _stream.clear();
-
     std::vector<Easy::Notification> v;
-    for (const Easy::stream_event &event : Easy::parse_stream(buffer))
+    static std::uint_fast8_t count_empty = 0;
+
+    if (!_stream.empty())
     {
-        if (event.first == Easy::event_type::Notification)
+        const string buffer = _stream;
+        _stream.clear();
+
+        for (const Easy::stream_event &event : Easy::parse_stream(buffer))
         {
-            v.push_back(Easy::Notification(event.second));
+            if (event.first == Easy::event_type::Notification)
+            {
+                v.push_back(Easy::Notification(event.second));
+            }
+        }
+    }
+    else
+    {
+        // If we got an empty message 5 times, set state to not running
+        ++count_empty;
+        if (count_empty > 5)
+        {
+            _running = false;
         }
     }
 
