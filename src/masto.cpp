@@ -97,6 +97,7 @@ std::vector<Easy::Notification> Listener::get_new_messages()
                 v.push_back(Easy::Notification(event.second));
             }
         }
+        count_empty = 0;
     }
     else
     {
@@ -104,8 +105,9 @@ std::vector<Easy::Notification> Listener::get_new_messages()
         ++count_empty;
         if (count_empty > 5)
         {
-            _running = false;
             count_empty = 0;
+            cout << "DEBUG: Detected broken connection.\n";
+            _running = false;
         }
     }
 

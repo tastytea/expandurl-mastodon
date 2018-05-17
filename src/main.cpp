@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
         if (!listener.stillrunning())
         {
             cout << "DEBUG: Reestablishing connection...\n";
+            listener.stop();
             listener.start();
         }
 
