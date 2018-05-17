@@ -17,6 +17,7 @@
 #include <fstream>
 #include <cstdlib>  // getenv()
 #include <iostream>
+#include <mutex>
 #include "version.hpp"
 #include "expandurl-mastodon.hpp"
 
@@ -65,6 +66,10 @@ const void Listener::start()
         cout << "DEBUG: Connection lost.\n";
         _running = false;
     });
+    while (_ptr == nullptr)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }
 
 const void Listener::stop()
@@ -85,6 +90,7 @@ std::vector<Easy::Notification> Listener::get_new_messages()
     std::vector<Easy::Notification> v;
     static std::uint_fast8_t count_empty = 0;
 
+    std::lock_guard<std::mutex> lock(_ptr->get_mutex());
     if (!_stream.empty())
     {
         const string buffer = _stream;
