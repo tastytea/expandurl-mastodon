@@ -105,6 +105,7 @@ std::vector<Easy::Notification> Listener::get_new_messages()
         if (count_empty > 5)
         {
             _running = false;
+            count_empty = 0;
         }
     }
 
