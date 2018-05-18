@@ -17,6 +17,8 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
+#include <array>
+#include <utility>
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/Infos.hpp>
@@ -75,6 +77,21 @@ const string expand(const string &url)
 
 const string strip(const string &url)
 {
-    const std::regex re("[\\?&]utm_[^&]+");
-    return std::regex_replace(url, re, "");
+    using replace_pair = std::pair<const std::regex, const std::string>;
+    string newurl = url;
+
+    const std::array<const replace_pair, 4> replace_array =
+    {{
+        { std::regex("[\\?&]utm_[^&]+"), "" },
+        { std::regex("[\\?&]wtmc=[^&]+"), "" },
+        { std::regex("[\\?&]__twitter_impression=[^&]+"), "" },
+        { std::regex("//amp\\."), "//" }
+    }};
+
+    for (const replace_pair &pair : replace_array)
+    {
+        newurl = std::regex_replace(newurl, pair.first, pair.second);
+    }
+
+    return newurl;
 }
