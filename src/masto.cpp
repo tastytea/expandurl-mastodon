@@ -195,13 +195,24 @@ const std::uint_fast64_t Listener::get_parent_id(Easy::Notification &notif)
     string answer;
     std::uint_fast16_t ret;
 
+    // Fetch full status
+    ret = _masto->get(API::v1::search, {{ "q", { notif.status().url() }}},
+                      answer);
+    if (ret > 0)
+    {
+        cerr << "ERROR: " << ret <<
+                "Could not fetch status (in " << __FUNCTION__ << ")\n";
+        return 0;
+    }
+
     ret = _masto->get(API::v1::statuses_id,
                       {{ "id", { std::to_string(notif.status().id()) }}},
                       answer);
 
     if (ret > 0)
     {
-        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
+        cerr << "ERROR: " << ret <<
+                "Could not get status (in " << __FUNCTION__ << ")\n";
         return 0;
     }
     else
