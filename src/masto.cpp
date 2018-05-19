@@ -100,7 +100,11 @@ std::vector<Easy::Notification> Listener::get_new_messages()
         {
             if (event.first == Easy::event_type::Notification)
             {
-                v.push_back(Easy::Notification(event.second));
+                Easy::Notification notif(event.second);
+                if (notif.type() == Easy::notification_type::Mention)
+                {
+                    v.push_back(notif);
+                }
             }
         }
         count_empty = 0;
