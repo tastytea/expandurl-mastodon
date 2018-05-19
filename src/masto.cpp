@@ -78,6 +78,8 @@ const void Listener::stop()
     {
         _ptr->cancel_stream();
         _thread.join();
+        _ptr.reset();
+        _stream = "";
     }
     else
     {
