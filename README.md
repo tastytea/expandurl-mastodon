@@ -53,7 +53,7 @@ config file with your account and access token in
 
     {
         "account": "expandurl@example.social",
-        "access_tocken": "abc123"
+        "access_token": "abc123"
     }
 
 Now start expandurl-mastodon without parameters.
