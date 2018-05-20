@@ -97,6 +97,7 @@ private:
 
     const bool read_config();
     const bool write_config();
+    const bool register_app();
 };
 
 #endif  // EXPANDURL_MASTODON_HPP

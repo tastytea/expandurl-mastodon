@@ -44,8 +44,22 @@ Listener::Listener()
     }
     else
     {
-        cerr << "ERROR: Could not open " << _configfilepath << ".\n";
-        exit(1);
+        cerr << "WARNING: Could not open " << _configfilepath << ".\n";
+        cout << "Attempting to register application and write config file.\n";
+        if (register_app())
+        {
+            cout << "DEBUG: registration successful\n";
+            if (!write_config())
+            {
+                cerr << "ERROR: Could not write " << _configfilepath << ".\n";
+                std::exit(1);
+            }
+        }
+        else
+        {
+            cerr << "ERROR: Could not register app.\n";
+            std::exit(2);
+        }
     }
 }
 
@@ -53,7 +67,7 @@ Listener::~Listener()
 {
     if (!write_config())
     {
-        cerr << "ERROR: Could not open " << _configfilepath << ".\n";
+        cerr << "ERROR: Could not write " << _configfilepath << ".\n";
     }
 }
 
@@ -300,4 +314,53 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
 const bool Listener::stillrunning() const
 {
     return _running;
+}
+
+const bool Listener::register_app()
+{
+    cout << "Account (username@instance): ";
+    std::cin >> _instance;
+    _config["account"] = _instance;
+    _instance = _instance.substr(_instance.find('@') + 1);
+
+    _masto = std::make_unique<Easy>(_instance, "");
+    _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
+                          global::version);
+
+    std::uint_fast16_t ret;
+    string client_id, client_secret, url;
+    ret = _masto->register_app1("expandurl-mastodon",
+                                "urn:ietf:wg:oauth:2.0:oob",
+                                "read write",
+                                "https://github.com/tastytea/expandurl-mastodon",
+                                client_id,
+                                client_secret,
+                                url);
+    if (ret == 0)
+    {
+        string code;
+        cout << "Visit " << url << " to authorize this application.\n";
+        cout << "Paste the authorization code here: ";
+        std::cin >> code;
+        ret = _masto->register_app2(client_id,
+                                    client_secret,
+                                    "urn:ietf:wg:oauth:2.0:oob",
+                                    code,
+                                    _access_token);
+        if (ret == 0)
+        {
+            _config["access_token"] = _access_token;
+            return true;
+        }
+        else
+        {
+            cerr << "ERROR: register_app2(): " << ret << '\n';
+        }
+    }
+    else
+    {
+        cerr << "ERROR: register_app1(): " << ret << '\n';
+    }
+
+    return false;
 }
