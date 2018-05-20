@@ -77,10 +77,7 @@ const void Listener::stop()
     if (_ptr)
     {
         _ptr->cancel_stream();
-        if (_running)
-        {
-            _thread.join();
-        }
+        _thread.join();
         _ptr.reset();
         _stream = "";
     }

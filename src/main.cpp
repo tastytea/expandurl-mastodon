@@ -64,7 +64,6 @@ int main(int argc, char *argv[])
             cout << "DEBUG: Reestablishing connection...\n";
             listener.stop();
             listener.start();
-            cout << "DEBUG: Reestablished connection.\n";
         }
 
         for (Easy::Notification &notif : listener.get_new_messages())
