@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
             cout << "DEBUG: Reestablishing connection...\n";
             listener.stop();
             listener.start();
+            new_messages = listener.catchup();
         }
 
         // Only get new messages if we don't have to catchup
