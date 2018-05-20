@@ -8,6 +8,11 @@ mention the bot account (`@expandurl@botsin.space` for example).
 This bot uses the same visibility as you, but posts unlisted instead of public.
 It retains the sensitive flag and spoiler warnings.
 
+Some tracking parameters, like those beginning with
+[utm_](https://en.wikipedia.org/wiki/UTM_parameters) are stripped. It also tries
+to rewrite [AMP](https://en.wikipedia.org/wiki/Accelerated_Mobile_Pages) URLs to
+point at the real webpages.
+
 Please report any bugs via the
 [issue tracker on GitHub](https://github.com/tastytea/expandurl-mastodon/issues)
 or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
