@@ -21,6 +21,7 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
  * [cmake](https://cmake.org/) (tested: 3.9.6)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
  * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.13.1)
+ * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
 
 ## Get sourcecode
 
@@ -39,12 +40,16 @@ Install with `make install`.
 
 # Usage
 
+**The config file has changed from cfg to JSON in 0.4.0.**
+
 You will need to generate an access token yourself at the moment. Create a
 config file with your account and access token in
-`${HOME}/.config/expandurl-mastodon.cfg`:
+`${HOME}/.config/expandurl-mastodon.json`:
 
-    expandurl@example.social
-    abc123
+    {
+        "account": "expandurl@example.social",
+        "access_tocken": "abc123"
+    }
 
 Now start expandurl-mastodon without parameters.
 

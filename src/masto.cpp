@@ -18,6 +18,7 @@
 #include <cstdlib>  // getenv()
 #include <iostream>
 #include <mutex>
+#include <sstream>
 #include "version.hpp"
 #include "expandurl-mastodon.hpp"
 
@@ -32,26 +33,43 @@ Listener::Listener()
 , _ptr(nullptr)
 , _running(false)
 {
-    const string filepath = static_cast<const string>(getenv("HOME")) +
-                            "/.config/expandurl-mastodon.cfg";
-    std::ifstream file(filepath);
 
-    if (file.is_open())
+    if (read_config())
     {
-        std::getline(file, _instance);
-        _instance = _instance.substr(_instance.find('@') + 1);
-        std::getline(file, _access_token);
-        file.close();
-
         _masto = std::make_unique<Easy>(_instance, _access_token);
         _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
                               global::version);
     }
     else
     {
-        cerr << "ERROR: Could not open " << filepath << '\n';
         exit(1);
     }
+}
+
+const bool Listener::read_config()
+{
+    const string filepath = static_cast<const string>(getenv("HOME")) +
+                            "/.config/expandurl-mastodon.json";
+    std::ifstream file(filepath);
+
+    if (file.is_open())
+    {
+        std::stringstream json;
+        json << file.rdbuf();
+        file.close();
+        json >> _config;
+
+        _instance = _config["account"].asString();
+        _instance = _instance.substr(_instance.find('@') + 1);
+        _access_token = _config["access_token"].asString();
+    }
+    else
+    {
+        cerr << "ERROR: Could not open " << filepath << ".\n";
+        return false;
+    }
+
+    return true;
 }
 
 const void Listener::start()
@@ -124,6 +142,11 @@ std::vector<Easy::Notification> Listener::get_new_messages()
     }
 
     return v;
+}
+
+const std::vector<Easy::Notification> Listener::catchup()
+{
+    //
 }
 
 Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)

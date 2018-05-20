@@ -24,6 +24,7 @@
 #include <cstdint>
 #include <mastodon-cpp/mastodon-cpp.hpp>
 #include <mastodon-cpp/easy/all.hpp>
+#include <jsoncpp/json/json.h>
 
 using std::string;
 using Mastodon::API;
@@ -75,6 +76,7 @@ public:
     const void stop();
 
     std::vector<Easy::Notification> get_new_messages();
+    const std::vector<Easy::Notification> catchup();
     Easy::Status get_status(const std::uint_fast64_t &id);
     const bool send_reply(const Easy::Status &to_status, const string &message);
     const std::uint_fast64_t get_parent_id(Easy::Notification &notif);
@@ -89,6 +91,9 @@ private:
     std::unique_ptr<API::http> _ptr;
     std::thread _thread;
     bool _running;
+    Json::Value _config;
+
+    const bool read_config();
 };
 
 #endif  // EXPANDURL_MASTODON_HPP
