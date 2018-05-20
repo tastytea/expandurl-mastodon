@@ -47,16 +47,16 @@ Install with `make install`.
 
 **The config file has changed from cfg to JSON in 0.4.0.**
 
-You will need to generate an access token yourself at the moment. Create a
-config file with your account and access token in
-`${HOME}/.config/expandurl-mastodon.json`:
+Start expandurl-mastodon without parameters.
+
+If no config file is found, you will be asked to provide your account address
+and an acess token is generated. The config file can be found in
+`${HOME}/.config/expandurl-mastodon.json` and looks like this:
 
     {
         "account": "expandurl@example.social",
         "access_token": "abc123"
     }
-
-Now start expandurl-mastodon without parameters.
 
 # Copyright
 
