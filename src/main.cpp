@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
 
     Listener listener;
     listener.start();
+    std::vector<Easy::Notification> new_messages = listener.catchup();
 
     while (running)
     {
@@ -66,9 +67,15 @@ int main(int argc, char *argv[])
             listener.start();
         }
 
-        for (Easy::Notification &notif : listener.get_new_messages())
+        // Only get new messages if we don't have to catchup
+        if (new_messages.size() == 0)
         {
-            cout << "DEBUG: new messages\n";
+            new_messages = listener.get_new_messages();
+        }
+
+        for (Easy::Notification &notif : new_messages)
+        {
+            cout << "DEBUG: new message\n";
             const std::uint_fast64_t id = listener.get_parent_id(notif);
             cout << "DEBUG: in_reply_to_id: " << id << '\n';
             Easy::Status status;
@@ -109,6 +116,7 @@ int main(int argc, char *argv[])
                     "It seems that you didn't reply to a message?");
             }
         }
+        new_messages.clear();
     }
 
     listener.stop();

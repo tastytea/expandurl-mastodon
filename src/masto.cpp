@@ -32,6 +32,8 @@ Listener::Listener()
 , _stream("")
 , _ptr(nullptr)
 , _running(false)
+, _configfilepath(static_cast<const string>(getenv("HOME")) +
+                  "/.config/expandurl-mastodon.json")
 {
 
     if (read_config())
@@ -42,15 +44,22 @@ Listener::Listener()
     }
     else
     {
+        cerr << "ERROR: Could not open " << _configfilepath << ".\n";
         exit(1);
+    }
+}
+
+Listener::~Listener()
+{
+    if (!write_config())
+    {
+        cerr << "ERROR: Could not open " << _configfilepath << ".\n";
     }
 }
 
 const bool Listener::read_config()
 {
-    const string filepath = static_cast<const string>(getenv("HOME")) +
-                            "/.config/expandurl-mastodon.json";
-    std::ifstream file(filepath);
+    std::ifstream file(_configfilepath);
 
     if (file.is_open())
     {
@@ -62,14 +71,25 @@ const bool Listener::read_config()
         _instance = _config["account"].asString();
         _instance = _instance.substr(_instance.find('@') + 1);
         _access_token = _config["access_token"].asString();
-    }
-    else
-    {
-        cerr << "ERROR: Could not open " << filepath << ".\n";
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
+}
+
+const bool Listener::write_config()
+{
+    std::ofstream outfile(_configfilepath);
+    if (outfile.is_open())
+    {
+        outfile.write(_config.toStyledString().c_str(),
+                      _config.toStyledString().length());
+        outfile.close();
+
+        return true;
+    }
+
+    return false;
 }
 
 const void Listener::start()
@@ -105,7 +125,7 @@ const void Listener::stop()
     }
 }
 
-std::vector<Easy::Notification> Listener::get_new_messages()
+const std::vector<Easy::Notification> Listener::get_new_messages()
 {
     std::vector<Easy::Notification> v;
     static std::uint_fast8_t count_empty = 0;
@@ -146,7 +166,31 @@ std::vector<Easy::Notification> Listener::get_new_messages()
 
 const std::vector<Easy::Notification> Listener::catchup()
 {
-    //
+    std::vector<Easy::Notification> v;
+    const string last_id = _config["last_id"].asString();
+    if (last_id != "")
+    {
+        cout << "DEBUG: catching up...\n";
+        API::parametermap parameter =
+        {
+            { "since_id", { last_id } },
+            { "exclude_types", { "follow", "favourite", "reblog" } }
+        };
+        string answer;
+        std::uint_fast16_t ret;
+
+        ret = _masto->get(API::v1::notifications, parameter, answer);
+
+        if (ret == 0)
+        {
+            for (const string str : Easy::json_array_to_vector(answer))
+            {
+                v.push_back(Easy::Notification(str));
+            }
+        }
+    }
+
+    return v;
 }
 
 Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
@@ -219,7 +263,7 @@ const bool Listener::send_reply(const Easy::Status &to_status,
     }
 }
 
-const std::uint_fast64_t Listener::get_parent_id(Easy::Notification &notif)
+const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif)
 {
     string answer;
     std::uint_fast16_t ret;
@@ -246,6 +290,7 @@ const std::uint_fast64_t Listener::get_parent_id(Easy::Notification &notif)
     }
     else
     {
+        _config["last_id"] = std::to_string(notif.id());
         Easy::Status s(answer);
         return s.in_reply_to_id();
     }

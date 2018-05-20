@@ -65,6 +65,7 @@ class Listener
 {
 public:
     Listener();
+    ~Listener();
 
     /*!
      *  @brief  Starts listening on Mastodon
@@ -75,11 +76,11 @@ public:
      */
     const void stop();
 
-    std::vector<Easy::Notification> get_new_messages();
+    const std::vector<Easy::Notification> get_new_messages();
     const std::vector<Easy::Notification> catchup();
     Easy::Status get_status(const std::uint_fast64_t &id);
     const bool send_reply(const Easy::Status &to_status, const string &message);
-    const std::uint_fast64_t get_parent_id(Easy::Notification &notif);
+    const std::uint_fast64_t get_parent_id(const Easy::Notification &notif);
 
     const bool stillrunning() const;
 
@@ -92,8 +93,10 @@ private:
     std::thread _thread;
     bool _running;
     Json::Value _config;
+    const string _configfilepath;
 
     const bool read_config();
+    const bool write_config();
 };
 
 #endif  // EXPANDURL_MASTODON_HPP
