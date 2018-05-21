@@ -81,12 +81,13 @@ const string strip(const string &url)
     using namespace std::regex_constants;
     string newurl = url;
 
-    const std::array<const replace_pair, 4> replace_array =
+    const std::array<const replace_pair, 5> replace_array =
     {{
         { std::regex("[\\?&]utm_[^&]+", icase), "" },                   // Google
-        { std::regex("[\\?&]wtmc=[^&]+", icase), "" },                  // Twitter
-        { std::regex("[\\?&]__twitter_impression=[^&]+", icase), "" },  // Twitter
-        { std::regex("//amp\\.", icase), "//" },                        // AMP
+        { std::regex("[\\?&]wtmc=[^&]+", icase), "" },                  // Twitter?
+        { std::regex("[\\?&]__twitter_impression=[^&]+", icase), "" },  // Twitter?
+        { std::regex("[\\?&]wt_zmc=[^&]+", icase), "" },                // Twitter?
+        { std::regex("//amp\\.", icase), "//" }                         // AMP
     }};
 
     for (const replace_pair &pair : replace_array)
