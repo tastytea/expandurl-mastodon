@@ -30,6 +30,10 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 
 ## Get sourcecode
 
+### Latest release
+
+https://github.com/tastytea/expandurl-mastodon/releases/latest
+
 ### Development version
 
     git clone https://github.com/tastytea/expandurl-mastodon.git
