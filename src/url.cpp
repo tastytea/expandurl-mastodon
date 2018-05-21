@@ -78,14 +78,15 @@ const string expand(const string &url)
 const string strip(const string &url)
 {
     using replace_pair = std::pair<const std::regex, const std::string>;
+    using namespace std::regex_constants;
     string newurl = url;
 
     const std::array<const replace_pair, 4> replace_array =
     {{
-        { std::regex("[\\?&]utm_[^&]+"), "" },
-        { std::regex("[\\?&]wtmc=[^&]+"), "" },
-        { std::regex("[\\?&]__twitter_impression=[^&]+"), "" },
-        { std::regex("//amp\\."), "//" }
+        { std::regex("[\\?&]utm_[^&]+", icase), "" },                   // Google
+        { std::regex("[\\?&]wtmc=[^&]+", icase), "" },                  // Twitter
+        { std::regex("[\\?&]__twitter_impression=[^&]+", icase), "" },  // Twitter
+        { std::regex("//amp\\.", icase), "//" },                        // AMP
     }};
 
     for (const replace_pair &pair : replace_array)
