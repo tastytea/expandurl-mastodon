@@ -48,7 +48,7 @@ Listener::Listener()
         cout << "Attempting to register application and write config file.\n";
         if (register_app())
         {
-            cout << "DEBUG: registration successful\n";
+            cout << "DEBUG: registration successful.\n";
             if (!write_config())
             {
                 cerr << "ERROR: Could not write " << _configfilepath << ".\n";
@@ -267,7 +267,7 @@ const bool Listener::send_reply(const Easy::Status &to_status,
 
     if (ret == 0)
     {
-        cout << "DEBUG: Sent reply: " << message << '\n';
+        cout << "DEBUG: Sent reply.\n";
         return true;
     }
     else
