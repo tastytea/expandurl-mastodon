@@ -62,8 +62,8 @@ int main(int argc, char *argv[])
         std::this_thread::sleep_for(std::chrono::seconds(5));
         if (!listener.stillrunning())
         {
-            cout << "DEBUG: Reestablishing connection...\n";
             listener.stop();
+            cout << "DEBUG: Reestablishing connection...\n";
             listener.start();
             new_messages = listener.catchup();
         }
