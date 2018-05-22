@@ -41,6 +41,7 @@ void signal_handler(int signum)
             }
             running = false;
             syslog(LOG_NOTICE, "Received signal %d, closing...", signum);
+            std::cerr << "Received signal " << signum << ", closing...\n";
             break;
         default:
             break;
