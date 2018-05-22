@@ -220,7 +220,7 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
     }
     else
     {
-        syslog(LOG_ERR, "Error %lu in %s.", ret, __FUNCTION__);
+        syslog(LOG_ERR, "Error %u in %s.", ret, __FUNCTION__);
         return Easy::Status();
     }
 }
@@ -272,7 +272,7 @@ const bool Listener::send_reply(const Easy::Status &to_status,
     }
     else
     {
-        syslog(LOG_ERR, "Error %lu in %s.", ret, __FUNCTION__);
+        syslog(LOG_ERR, "Error %u in %s.", ret, __FUNCTION__);
         return false;
     }
 }
@@ -287,7 +287,7 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
                       answer);
     if (ret > 0 || !Easy::Status(answer).valid())
     {
-        syslog(LOG_ERR, "Error %lu: Could not fetch status (in %s).",
+        syslog(LOG_ERR, "Error %u: Could not fetch status (in %s).",
                ret, __FUNCTION__);
         return 0;
     }
@@ -298,7 +298,7 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
 
     if (ret > 0)
     {
-        syslog(LOG_ERR, "Error %lu: Could not get status (in %s).",
+        syslog(LOG_ERR, "Error %u: Could not get status (in %s).",
                ret, __FUNCTION__);
         return 0;
     }
@@ -354,12 +354,12 @@ const bool Listener::register_app()
         }
         else
         {
-            syslog(LOG_ERR, "register_app2(): %lu", ret);
+            syslog(LOG_ERR, "register_app2(): %u", ret);
         }
     }
     else
     {
-        syslog(LOG_ERR, "register_app1(): %lu", ret);
+        syslog(LOG_ERR, "register_app1(): %u", ret);
     }
 
     return false;
