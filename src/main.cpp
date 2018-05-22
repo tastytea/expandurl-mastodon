@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     curlpp::initialize();
-    openlog("expandurl-mastodon", LOG_CONS | LOG_NDELAY | LOG_PID, LOG_LOCAL0);
+    openlog("expandurl-mastodon", LOG_CONS | LOG_NDELAY | LOG_PID, LOG_LOCAL1);
     syslog(LOG_NOTICE, "Program started by User %d", getuid());
 
     Listener listener;
