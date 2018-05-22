@@ -62,6 +62,9 @@ and an acess token is generated. The config file can be found in
         "access_token": "abc123"
     }
 
+After the configuration file is generated, you can start expandurl-mastodon as
+daemon.
+
 # Copyright
 
     Copyright © 2018 tastytea <tastytea@tastytea.de>.

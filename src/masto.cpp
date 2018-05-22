@@ -19,10 +19,10 @@
 #include <iostream>
 #include <mutex>
 #include <sstream>
+#include <syslog.h>
 #include "version.hpp"
 #include "expandurl-mastodon.hpp"
 
-using std::cerr;
 using std::cout;
 using std::string;
 
@@ -44,20 +44,20 @@ Listener::Listener()
     }
     else
     {
-        cerr << "WARNING: Could not open " << _configfilepath << ".\n";
-        cout << "Attempting to register application and write config file.\n";
+        syslog(LOG_WARNING, "Could not open %s.", _configfilepath.c_str());
+        syslog(LOG_INFO, "Attempting to register application and write config file.");
         if (register_app())
         {
-            cout << "DEBUG: registration successful.\n";
+            syslog(LOG_INFO, "Registration successful.");
             if (!write_config())
             {
-                cerr << "ERROR: Could not write " << _configfilepath << ".\n";
+                syslog(LOG_ERR, "Could not write %s.", _configfilepath.c_str());
                 std::exit(1);
             }
         }
         else
         {
-            cerr << "ERROR: Could not register app.\n";
+            syslog(LOG_ERR, "Could not register app.");
             std::exit(2);
         }
     }
@@ -67,7 +67,7 @@ Listener::~Listener()
 {
     if (!write_config())
     {
-        cerr << "ERROR: Could not write " << _configfilepath << ".\n";
+        syslog(LOG_ERR, "Could not write %s.", _configfilepath.c_str());
     }
 }
 
@@ -115,7 +115,7 @@ const void Listener::start()
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
                             global::version);
         masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
-        cout << "DEBUG: Connection lost.\n";
+        syslog(LOG_DEBUG, "Connection lost.");
         _running = false;
     });
     while (_ptr == nullptr)
@@ -135,7 +135,7 @@ const void Listener::stop()
     }
     else
     {
-        cout << "DEBUG: _ptr is false.\n";
+        syslog(LOG_DEBUG, "_ptr is false.");
     }
 }
 
@@ -170,7 +170,7 @@ const std::vector<Easy::Notification> Listener::get_new_messages()
         if (count_empty > 5)
         {
             count_empty = 0;
-            cout << "DEBUG: Detected broken connection.\n";
+            syslog(LOG_NOTICE, "Detected broken connection.");
             _running = false;
         }
     }
@@ -184,7 +184,7 @@ const std::vector<Easy::Notification> Listener::catchup()
     const string last_id = _config["last_id"].asString();
     if (last_id != "")
     {
-        cout << "DEBUG: catching up...\n";
+        syslog(LOG_DEBUG, "Catching up...");
         API::parametermap parameter =
         {
             { "since_id", { last_id } },
@@ -220,7 +220,7 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
     }
     else
     {
-        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
+        syslog(LOG_ERR, "Error %lu in %s.", ret, __FUNCTION__);
         return Easy::Status();
     }
 }
@@ -267,12 +267,12 @@ const bool Listener::send_reply(const Easy::Status &to_status,
 
     if (ret == 0)
     {
-        cout << "DEBUG: Sent reply.\n";
+        syslog(LOG_DEBUG, "Sent reply");
         return true;
     }
     else
     {
-        cerr << "ERROR: " << ret << " (in " << __FUNCTION__ << ")\n";
+        syslog(LOG_ERR, "Error %lu in %s.", ret, __FUNCTION__);
         return false;
     }
 }
@@ -287,8 +287,8 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
                       answer);
     if (ret > 0 || !Easy::Status(answer).valid())
     {
-        cerr << "ERROR: " << ret <<
-                "Could not fetch status (in " << __FUNCTION__ << ")\n";
+        syslog(LOG_ERR, "Error %lu: Could not fetch status (in %s).",
+               ret, __FUNCTION__);
         return 0;
     }
 
@@ -298,8 +298,8 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
 
     if (ret > 0)
     {
-        cerr << "ERROR: " << ret <<
-                "Could not get status (in " << __FUNCTION__ << ")\n";
+        syslog(LOG_ERR, "Error %lu: Could not get status (in %s).",
+               ret, __FUNCTION__);
         return 0;
     }
     else
@@ -354,12 +354,12 @@ const bool Listener::register_app()
         }
         else
         {
-            cerr << "ERROR: register_app2(): " << ret << '\n';
+            syslog(LOG_ERR, "register_app2(): %lu", ret);
         }
     }
     else
     {
-        cerr << "ERROR: register_app1(): " << ret << '\n';
+        syslog(LOG_ERR, "register_app1(): %lu", ret);
     }
 
     return false;

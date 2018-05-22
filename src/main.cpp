@@ -18,11 +18,11 @@
 #include <chrono>
 #include <csignal>
 #include <regex>
+#include <syslog.h>
+#include <unistd.h> // getuid()
 #include <curlpp/cURLpp.hpp>
 #include "expandurl-mastodon.hpp"
 
-using std::cout;
-using std::cerr;
 using std::string;
 using Mastodon::Easy;
 
@@ -36,11 +36,11 @@ void signal_handler(int signum)
         case SIGTERM:
             if (!running)
             {
-                cout << "Forced close.\n";
+                syslog(LOG_NOTICE, "Forced close.");
                 exit(signum);
             }
             running = false;
-            cout << "Closing, this could take a few seconds...\n";
+            syslog(LOG_NOTICE, "Received signal %d, closing...", signum);
             break;
         default:
             break;
@@ -52,6 +52,8 @@ int main(int argc, char *argv[])
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     curlpp::initialize();
+    openlog("expandurl-mastodon", LOG_CONS | LOG_NDELAY | LOG_PID, LOG_LOCAL0);
+    syslog(LOG_NOTICE, "Program started by User %d", getuid());
 
     Listener listener;
     listener.start();
@@ -63,8 +65,9 @@ int main(int argc, char *argv[])
         if (!listener.stillrunning())
         {
             listener.stop();
-            cout << "DEBUG: Reestablishing connection...\n";
+            syslog(LOG_DEBUG, "Reestablishing connection...");
             listener.start();
+            syslog(LOG_NOTICE, "Reestablished connection.");
             new_messages = listener.catchup();
         }
 
@@ -76,9 +79,9 @@ int main(int argc, char *argv[])
 
         for (Easy::Notification &notif : new_messages)
         {
-            cout << "DEBUG: new message\n";
+            syslog(LOG_DEBUG, "new message");
             const std::uint_fast64_t id = listener.get_parent_id(notif);
-            cout << "DEBUG: in_reply_to_id: " << id << '\n';
+            syslog(LOG_DEBUG, "in_reply_to_id: %lu", id);
             Easy::Status status;
 
             if (id > 0)
@@ -95,8 +98,7 @@ int main(int argc, char *argv[])
                     {
                         if (!listener.send_reply(notif.status(), message))
                         {
-                            cerr << "ERROR: could not send reply to " << id <<
-                                    '\n';
+                            syslog(LOG_ERR, "could not send reply to %lu", id);
                         }
                     }
                     else
@@ -123,6 +125,7 @@ int main(int argc, char *argv[])
     }
 
     listener.stop();
+    closelog();
     curlpp::terminate();
 
     return 0;

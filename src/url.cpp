@@ -19,13 +19,13 @@
 #include <regex>
 #include <array>
 #include <utility>
+#include <syslog.h>
 #include <curlpp/cURLpp.hpp>
 #include <curlpp/Options.hpp>
 #include <curlpp/Infos.hpp>
 #include "version.hpp"
 #include "expandurl-mastodon.hpp"
 
-using std::cerr;
 using std::string;
 namespace curlopts = curlpp::options;
 
@@ -68,8 +68,8 @@ const string expand(const string &url)
     }
     catch (const std::exception &e)
     {
-        cerr << "ERROR: " << e.what() << '\n';
-        cerr << "The previous error is ignored.\n";
+        syslog(LOG_ERR, "%s", e.what());
+        syslog(LOG_NOTICE, "The previous error is ignored.");
     }
 
     return curlpp::infos::EffectiveUrl::get(request);
