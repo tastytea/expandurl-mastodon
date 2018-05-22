@@ -95,7 +95,8 @@ int main(int argc, char *argv[])
                     {
                         if (!listener.send_reply(notif.status(), message))
                         {
-                            cerr << "ERROR: could not send reply to " << id << '\n';
+                            cerr << "ERROR: could not send reply to " << id <<
+                                    '\n';
                         }
                     }
                     else
@@ -114,7 +115,8 @@ int main(int argc, char *argv[])
             else
             {
                 listener.send_reply(notif.status(),
-                    "It seems that you didn't reply to a message?");
+                    "I couldn't find the message you replied to. 😞 \n"
+                    "Maybe the federation is a bit wonky at the moment.");
             }
         }
         new_messages.clear();
