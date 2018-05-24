@@ -54,7 +54,7 @@ Install with `make install`.
 Start expandurl-mastodon without parameters.
 
 If no config file is found, you will be asked to provide your account address
-and an acess token is generated. The config file can be found in
+and an access token is generated. The config file can be found in
 `${HOME}/.config/expandurl-mastodon.json` and looks like this:
 
     {
