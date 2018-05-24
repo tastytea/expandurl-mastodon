@@ -20,8 +20,8 @@ start_pre() {
 		return 1
 	fi
 
-	if [ ! -f ${user_home}/.config/expandurl-mastodon.cfg ] ; then
-		eerror "Please create ${user_home}/.config/expandurl-mastodon.cfg"
+	if [ ! -f ${user_home}/.config/expandurl-mastodon.json ] ; then
+		eerror "Please create ${user_home}/.config/expandurl-mastodon.json"
 		return 1
 	fi
 	return 0
