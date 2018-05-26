@@ -128,8 +128,8 @@ const void Listener::start()
         if (ret != 0 && ret != 14)  // 14 means canceled by user
         {
             syslog(LOG_ERR, "Connection terminated: Error %u", ret);
-            syslog(LOG_INFO, "Waiting for 30 seconds");
-            std::this_thread::sleep_for(std::chrono::seconds(30));
+            syslog(LOG_INFO, "Waiting for 60 seconds");
+            std::this_thread::sleep_for(std::chrono::seconds(60));
         }
         _running = false;
     });
