@@ -333,6 +333,7 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
             }
             else
             {
+                syslog(LOG_WARNING, "Could not get ID of replied-to parent post");
                 std::this_thread::sleep_for(std::chrono::seconds(2));
             }
         }
