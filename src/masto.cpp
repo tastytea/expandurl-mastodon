@@ -298,32 +298,46 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
     string answer;
     std::uint_fast16_t ret;
 
-    // Fetch full status
-    ret = _masto->get(API::v1::search, {{ "q", { notif.status().url() }}},
-                      answer);
-    if (ret > 0 || !Easy::Status(answer).valid())
+    // Retry up to 2 times
+    for (std::uint_fast8_t retries = 1; retries <= 2; ++retries)
     {
-        syslog(LOG_ERR, "Error %u: Could not fetch status (in %s).",
-               ret, __FUNCTION__);
-        return 0;
+        // Fetch full status
+        ret = _masto->get(API::v1::search, {{ "q", { notif.status().url() }}},
+                          answer);
+        if (ret > 0 || !Easy::Status(answer).valid())
+        {
+            syslog(LOG_ERR, "Error %u: Could not fetch status (in %s).",
+                   ret, __FUNCTION__);
+            return 0;
+        }
+
+        ret = _masto->get(API::v1::statuses_id,
+                          {{ "id", { std::to_string(notif.status().id()) }}},
+                          answer);
+
+        if (ret > 0)
+        {
+            syslog(LOG_ERR, "Error %u: Could not get status (in %s).",
+                   ret, __FUNCTION__);
+            return 0;
+        }
+        else
+        {
+            _config["last_id"] = std::to_string(notif.id());
+            const Easy::Status s(answer);
+
+            // If parent is found, return ID; else retry
+            if (s.in_reply_to_id() != 0)
+            {
+                return s.in_reply_to_id();
+            }
+            else
+            {
+                std::this_thread::sleep_for(std::chrono::seconds(2));
+            }
+        }
     }
 
-    ret = _masto->get(API::v1::statuses_id,
-                      {{ "id", { std::to_string(notif.status().id()) }}},
-                      answer);
-
-    if (ret > 0)
-    {
-        syslog(LOG_ERR, "Error %u: Could not get status (in %s).",
-               ret, __FUNCTION__);
-        return 0;
-    }
-    else
-    {
-        _config["last_id"] = std::to_string(notif.id());
-        Easy::Status s(answer);
-        return s.in_reply_to_id();
-    }
     return 0;
 }
 
