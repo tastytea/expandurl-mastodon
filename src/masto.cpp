@@ -110,12 +110,19 @@ const void Listener::start()
 {
     _thread = std::thread([=]
     {
+        std::uint_fast16_t ret = 0;
         _running = true;
         Easy masto(_instance, _access_token);
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
                             global::version);
-        masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
+        ret = masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
         syslog(LOG_DEBUG, "Connection lost.");
+        if (ret != 0 && ret != 14)  // 14 means canceled by user
+        {
+            syslog(LOG_ERR, "Connection terminated: Error %u", ret);
+            syslog(LOG_INFO, "Waiting for 30 seconds");
+            std::this_thread::sleep_for(std::chrono::seconds(30));
+        }
         _running = false;
     });
     while (_ptr == nullptr)
