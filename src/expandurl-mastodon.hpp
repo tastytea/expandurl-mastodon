@@ -94,10 +94,14 @@ private:
     bool _running;
     Json::Value _config;
     const string _configfilepath;
+    string _proxy;
+    string _proxy_user;
+    string _proxy_password;
 
     const bool read_config();
     const bool write_config();
     const bool register_app();
+    const void set_proxy(Easy &masto);
 };
 
 #endif  // EXPANDURL_MASTODON_HPP

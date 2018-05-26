@@ -25,7 +25,7 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
  * C++ compiler (tested: gcc 6.4)
  * [cmake](https://cmake.org/) (tested: 3.9.6)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
- * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.13.1)
+ * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.15.0)
  * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
 
 ## Get sourcecode
@@ -59,9 +59,16 @@ and an access token is generated. The config file can be found in
 
     {
         "account": "expandurl@example.social",
-        "access_token": "abc123"
+        "access_token": "abc123",
+        "proxy":
+        {
+            "url": "socks5h://[::1]:1080/",
+            "user": "user23",
+            "password": "supersecure"
+        }
     }
 
+If you want to use a proxy, you have to edit the configuration file manually.
 After the configuration file is generated, you can start expandurl-mastodon as
 daemon.
 

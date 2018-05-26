@@ -34,6 +34,9 @@ Listener::Listener()
 , _running(false)
 , _configfilepath(static_cast<const string>(getenv("HOME")) +
                   "/.config/expandurl-mastodon.json")
+, _proxy("")
+, _proxy_user("")
+, _proxy_password("")
 {
 
     if (read_config())
@@ -41,6 +44,7 @@ Listener::Listener()
         _masto = std::make_unique<Easy>(_instance, _access_token);
         _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
                               global::version);
+        set_proxy(*_masto);
     }
     else
     {
@@ -85,6 +89,9 @@ const bool Listener::read_config()
         _instance = _config["account"].asString();
         _instance = _instance.substr(_instance.find('@') + 1);
         _access_token = _config["access_token"].asString();
+        _proxy = _config["proxy"]["url"].asString();
+        _proxy_user = _config["proxy"]["user"].asString();
+        _proxy_password = _config["proxy"]["password"].asString();
         return true;
     }
 
@@ -115,6 +122,7 @@ const void Listener::start()
         Easy masto(_instance, _access_token);
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
                             global::version);
+        set_proxy(masto);
         ret = masto.get_stream(Mastodon::API::v1::streaming_user, _stream, _ptr);
         syslog(LOG_DEBUG, "Connection lost.");
         if (ret != 0 && ret != 14)  // 14 means canceled by user
@@ -371,4 +379,19 @@ const bool Listener::register_app()
     }
 
     return false;
+}
+
+const void Listener::set_proxy(Mastodon::Easy &masto)
+{
+    if (!_proxy.empty())
+    {
+        if (!_proxy_user.empty())
+        {
+            masto.set_proxy(_proxy, _proxy_user + ':' + _proxy_password);
+        }
+        else
+        {
+            masto.set_proxy(_proxy);
+        }
+    }
 }
