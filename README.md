@@ -25,7 +25,7 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
  * C++ compiler (tested: gcc 6.4)
  * [cmake](https://cmake.org/) (tested: 3.9.6)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
- * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.15.0)
+ * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.15.1)
  * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
 
 ## Get sourcecode
