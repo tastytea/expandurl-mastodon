@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.7)
 project (expandurl-mastodon
-         VERSION 0.7.3
+         VERSION 0.7.4
          LANGUAGES CXX
 )
 

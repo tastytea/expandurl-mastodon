@@ -115,9 +115,9 @@ const bool Listener::write_config()
 
 const void Listener::start()
 {
+    static std::uint_fast16_t ret = 0;
     _thread = std::thread([=]
     {
-        std::uint_fast16_t ret = 0;
         _running = true;
         Easy masto(_instance, _access_token);
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
@@ -137,7 +137,11 @@ const void Listener::start()
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
-    syslog(LOG_NOTICE, "Connected to %s", _instance.c_str());
+
+    if (ret == 0)
+    {
+        syslog(LOG_NOTICE, "Connected to %s", _instance.c_str());
+    }
 }
 
 const void Listener::stop()
