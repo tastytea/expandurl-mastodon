@@ -21,12 +21,14 @@
 #include <syslog.h>
 #include <unistd.h> // getuid()
 #include <curlpp/cURLpp.hpp>
+#include "configjson.hpp"
 #include "expandurl-mastodon.hpp"
 
 using std::string;
 using Mastodon::Easy;
 
 bool running = true;
+ConfigJSON configfile("expandurl-mastodon.json");
 
 void signal_handler(int signum)
 {
@@ -50,6 +52,11 @@ void signal_handler(int signum)
 
 int main(int argc, char *argv[])
 {
+    if (!configfile.read())
+    {
+        syslog(LOG_WARNING, "Could not open %s.", configfile.get_filepath().c_str());
+    }
+
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
     curlpp::initialize();

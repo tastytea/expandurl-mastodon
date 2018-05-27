@@ -27,6 +27,7 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
  * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.15.1)
  * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
+ * [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2.0)
 
 ## Get sourcecode
 

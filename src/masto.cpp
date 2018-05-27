@@ -32,30 +32,22 @@ Listener::Listener()
 , _stream("")
 , _ptr(nullptr)
 , _running(false)
-, _configfilepath(static_cast<const string>(getenv("HOME")) +
-                  "/.config/expandurl-mastodon.json")
 , _proxy("")
 , _proxy_user("")
 , _proxy_password("")
+, _config(configfile.get_json())
 {
-
-    if (read_config())
+    read_config();
+    if (_config["access_token"].isNull())
     {
-        _masto = std::make_unique<Easy>(_instance, _access_token);
-        _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
-                              global::version);
-        set_proxy(*_masto);
-    }
-    else
-    {
-        syslog(LOG_WARNING, "Could not open %s.", _configfilepath.c_str());
         syslog(LOG_INFO, "Attempting to register application and write config file.");
         if (register_app())
         {
             syslog(LOG_INFO, "Registration successful.");
-            if (!write_config())
+            if (!configfile.write())
             {
-                syslog(LOG_ERR, "Could not write %s.", _configfilepath.c_str());
+                syslog(LOG_ERR, "Could not write %s.",
+                       configfile.get_filepath().c_str());
                 std::exit(1);
             }
         }
@@ -65,52 +57,30 @@ Listener::Listener()
             std::exit(2);
         }
     }
+
+        _masto = std::make_unique<Easy>(_instance, _access_token);
+        _masto->set_useragent(static_cast<const string>("expandurl-mastodon/") +
+                              global::version);
+        set_proxy(*_masto);
 }
 
 Listener::~Listener()
 {
-    if (!write_config())
+    if (!configfile.write())
     {
-        syslog(LOG_ERR, "Could not write %s.", _configfilepath.c_str());
+        syslog(LOG_ERR, "Could not write %s.",
+               configfile.get_filepath().c_str());
     }
 }
 
-const bool Listener::read_config()
+const void Listener::read_config()
 {
-    std::ifstream file(_configfilepath);
-
-    if (file.is_open())
-    {
-        std::stringstream json;
-        json << file.rdbuf();
-        file.close();
-        json >> _config;
-
-        _instance = _config["account"].asString();
-        _instance = _instance.substr(_instance.find('@') + 1);
-        _access_token = _config["access_token"].asString();
-        _proxy = _config["proxy"]["url"].asString();
-        _proxy_user = _config["proxy"]["user"].asString();
-        _proxy_password = _config["proxy"]["password"].asString();
-        return true;
-    }
-
-    return false;
-}
-
-const bool Listener::write_config()
-{
-    std::ofstream outfile(_configfilepath);
-    if (outfile.is_open())
-    {
-        outfile.write(_config.toStyledString().c_str(),
-                      _config.toStyledString().length());
-        outfile.close();
-
-        return true;
-    }
-
-    return false;
+    _instance = _config["account"].asString();
+    _instance = _instance.substr(_instance.find('@') + 1);
+    _access_token = _config["access_token"].asString();
+    _proxy = _config["proxy"]["url"].asString();
+    _proxy_user = _config["proxy"]["user"].asString();
+    _proxy_password = _config["proxy"]["password"].asString();
 }
 
 const void Listener::start()

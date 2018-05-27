@@ -25,10 +25,13 @@
 #include <mastodon-cpp/mastodon-cpp.hpp>
 #include <mastodon-cpp/easy/all.hpp>
 #include <jsoncpp/json/json.h>
+#include "configjson.hpp"
 
 using std::string;
 using Mastodon::API;
 using Mastodon::Easy;
+
+extern ConfigJSON configfile;
 
 void signal_handler(int signum);
 
@@ -92,13 +95,12 @@ private:
     std::unique_ptr<API::http> _ptr;
     std::thread _thread;
     bool _running;
-    Json::Value _config;
-    const string _configfilepath;
     string _proxy;
     string _proxy_user;
     string _proxy_password;
+    Json::Value &_config;
 
-    const bool read_config();
+    const void read_config();
     const bool write_config();
     const bool register_app();
     const void set_proxy(Easy &masto);
