@@ -75,7 +75,6 @@ int main(int argc, char *argv[])
             listener.stop();
             syslog(LOG_DEBUG, "Reestablishing connection...");
             listener.start();
-            syslog(LOG_NOTICE, "Reestablished connection.");
             new_messages = listener.catchup();
         }
 

@@ -112,6 +112,10 @@ const void Listener::start()
     {
         syslog(LOG_NOTICE, "Connected to %s", _instance.c_str());
     }
+    else if (ret != 14)
+    {   // If the stream thread sleeps, the main thread should sleep too
+        std::this_thread::sleep_for(std::chrono::seconds(60));
+    }
 }
 
 const void Listener::stop()
@@ -191,6 +195,10 @@ const std::vector<Easy::Notification> Listener::catchup()
             {
                 v.push_back(Easy::Notification(str));
             }
+        }
+        else
+        {
+            syslog(LOG_ERR, "Could not catch up: Error %u", ret);
         }
     }
 
