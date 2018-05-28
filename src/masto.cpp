@@ -85,9 +85,10 @@ const void Listener::read_config()
 
 const void Listener::start()
 {
-    static std::uint_fast16_t ret = 0;
+    static std::uint_fast16_t ret;
     _thread = std::thread([=]
     {
+        ret = 0;
         _running = true;
         Easy masto(_instance, _access_token);
         masto.set_useragent(static_cast<const string>("expandurl-mastodon/") +
@@ -103,7 +104,7 @@ const void Listener::start()
         }
         _running = false;
     });
-    while (_ptr == nullptr)
+    while (!_ptr)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -125,6 +126,7 @@ const void Listener::stop()
         _ptr->cancel_stream();
         _thread.join();
         _ptr.reset();
+        _ptr = nullptr;
         _stream = "";
     }
     else
