@@ -89,6 +89,14 @@ const string strip(const string &url)
                                     (*it).asString());
     }
 
+    // If '&' is found in the new URL, but no '?'
+    if (newurl.find('&') != std::string::npos &&
+        newurl.find('?') == std::string::npos)
+    {
+        size_t pos = newurl.find('&');
+        newurl.replace(pos, 1, "?");
+    }
+
     return newurl;
 }
 
