@@ -77,23 +77,39 @@ const string expand(const string &url)
 
 const string strip(const string &url)
 {
-    using replace_pair = std::pair<const std::regex, const std::string>;
     using namespace std::regex_constants;
+    Json::Value &config = configfile.get_json();
     string newurl = url;
 
-    const std::array<const replace_pair, 5> replace_array =
-    {{
-        { std::regex("[\\?&]utm_[^&]+", icase), "" },                   // Google
-        { std::regex("[\\?&]wtmc=[^&]+", icase), "" },                  // Twitter?
-        { std::regex("[\\?&]__twitter_impression=[^&]+", icase), "" },  // Twitter?
-        { std::regex("[\\?&]wt_zmc=[^&]+", icase), "" },                // Twitter?
-        { std::regex("//amp\\.", icase), "//" }                         // AMP
-    }};
-
-    for (const replace_pair &pair : replace_array)
+    for (auto it = config["replace"].begin(); it != config["replace"].end();
+         ++it)
     {
-        newurl = std::regex_replace(newurl, pair.first, pair.second);
+        newurl = std::regex_replace(newurl,
+                                    std::regex(it.name(), icase),
+                                    (*it).asString());
     }
 
     return newurl;
+}
+
+const void init_replacements()
+{
+    using replace_pair = std::pair<const std::string, const std::string>;
+    Json::Value &config = configfile.get_json();
+    if (config["replace"].isNull())
+    {
+        const std::array<const replace_pair, 5> replace_array =
+        {{
+            { "[\\?&]utm_[^&]+", "" },                      // Google
+            { "[\\?&]wtmc=[^&]+", "" },                     // Twitter?
+            { "[\\?&]__twitter_impression=[^&]+", "" },     // Twitter?
+            { "[\\?&]wt_zmc=[^&]+", "" },                   // Twitter?
+            { "//amp\\.", "//" }                            // AMP
+        }};
+
+        for (const replace_pair &pair : replace_array)
+        {
+            config["replace"][pair.first] = pair.second;
+        }
+    }
 }

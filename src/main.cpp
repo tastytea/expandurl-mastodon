@@ -52,13 +52,15 @@ void signal_handler(int signum)
 
 int main(int argc, char *argv[])
 {
+    signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
+
     if (!configfile.read())
     {
         syslog(LOG_WARNING, "Could not open %s.", configfile.get_filepath().c_str());
     }
+    init_replacements();
 
-    signal(SIGINT, signal_handler);
-    signal(SIGTERM, signal_handler);
     curlpp::initialize();
     openlog("expandurl-mastodon", LOG_CONS | LOG_NDELAY | LOG_PID, LOG_LOCAL1);
     syslog(LOG_NOTICE, "Program started by user %d", getuid());

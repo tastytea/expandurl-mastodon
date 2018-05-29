@@ -63,6 +63,15 @@ const string expand(const string &url);
  */
 const string strip(const string &url);
 
+/*!
+ *  @brief  Initialize replacements for URLs
+ *
+ *          If no replacements are found in the config file, a default list is
+ *          inserted.
+ *
+ */
+const void init_replacements();
+
 
 class Listener
 {
