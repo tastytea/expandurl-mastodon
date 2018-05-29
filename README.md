@@ -66,11 +66,20 @@ and an access token is generated. The config file can be found in
             "url": "socks5h://[::1]:1080/",
             "user": "user23",
             "password": "supersecure"
+        },
+        "replace" :
+        {
+                "//amp\\." : "//",
+                "[\\?&]__twitter_impression=[^&]+" : "",
+                "[\\?&]utm_[^&]+" : "",
+                "[\\?&]wt_zmc=[^&]+" : "",
+                "[\\?&]wtmc=[^&]+" : ""
         }
     }
 
-If you want to use a proxy, you have to edit the configuration file manually.
-After the configuration file is generated, you can start expandurl-mastodon as
+If you want to use a proxy or define your own replacements, you have to edit the
+configuration file manually. After the configuration file is generated, you can
+start expandurl-mastodon as
 daemon.
 
 # Copyright
