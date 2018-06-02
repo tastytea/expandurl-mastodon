@@ -85,6 +85,7 @@ const void Listener::read_config()
 
 const void Listener::start()
 {
+    constexpr uint_fast8_t delay_after_error = 120;
     static std::uint_fast16_t ret;
     _thread = std::thread([=]
     {
@@ -99,8 +100,8 @@ const void Listener::start()
         if (ret != 0 && ret != 14)  // 14 means canceled by user
         {
             syslog(LOG_ERR, "Connection terminated: Error %u", ret);
-            syslog(LOG_INFO, "Waiting for 60 seconds");
-            std::this_thread::sleep_for(std::chrono::seconds(60));
+            syslog(LOG_INFO, "Waiting for %u seconds", delay_after_error);
+            std::this_thread::sleep_for(std::chrono::seconds(delay_after_error));
         }
         _running = false;
     });
@@ -115,7 +116,7 @@ const void Listener::start()
     }
     else if (ret != 14)
     {   // If the stream thread sleeps, the main thread should sleep too
-        std::this_thread::sleep_for(std::chrono::seconds(60));
+        std::this_thread::sleep_for(std::chrono::seconds(delay_after_error));
     }
 }
 
