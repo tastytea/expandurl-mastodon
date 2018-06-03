@@ -14,7 +14,7 @@ to rewrite [AMP](https://en.wikipedia.org/wiki/Accelerated_Mobile_Pages) URLs to
 point at the real webpages.
 
 Please report any bugs via the
-[issue tracker on GitHub](https://github.com/tastytea/expandurl-mastodon/issues)
+[issue tracker on git.schlomp.space](https://git.schlomp.space/tastytea/expandurl-mastodon/issues)
 or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 
 # Install
@@ -25,7 +25,7 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
  * C++ compiler (tested: gcc 6.4)
  * [cmake](https://cmake.org/) (tested: 3.9.6)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
- * [mastodon-cpp](https://github.com/tastytea/mastodon-cpp) (at least: 0.15.1)
+ * [mastodon-cpp](https://git.schlomp.space/tastytea/mastodon-cpp) (at least: 0.15.1)
  * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
  * [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2.0)
 
@@ -33,11 +33,11 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 
 ### Latest release
 
-https://github.com/tastytea/expandurl-mastodon/releases/latest
+https://git.schlomp.space/tastytea/expandurl-mastodon/releases
 
 ### Development version
 
-    git clone https://github.com/tastytea/expandurl-mastodon.git
+    git clone https://git.schlomp.space/tastytea/expandurl-mastodon.git
 
 ## Compile
 
