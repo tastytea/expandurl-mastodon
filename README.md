@@ -58,24 +58,26 @@ If no config file is found, you will be asked to provide your account address
 and an access token is generated. The config file can be found in
 `${HOME}/.config/expandurl-mastodon.json` and looks like this:
 
+```JSON
+{
+    "account": "expandurl@example.social",
+    "access_token": "abc123",
+    "proxy":
     {
-        "account": "expandurl@example.social",
-        "access_token": "abc123",
-        "proxy":
-        {
-            "url": "socks5h://[::1]:1080/",
-            "user": "user23",
-            "password": "supersecure"
-        },
-        "replace" :
-        {
-                "//amp\\." : "//",
-                "[\\?&]__twitter_impression=[^&]+" : "",
-                "[\\?&]utm_[^&]+" : "",
-                "[\\?&]wt_zmc=[^&]+" : "",
-                "[\\?&]wtmc=[^&]+" : ""
-        }
+        "url": "socks5h://[::1]:1080/",
+        "user": "user23",
+        "password": "supersecure"
+    },
+    "replace" :
+    {
+            "//amp\\." : "//",
+            "[\\?&]__twitter_impression=[^&]+" : "",
+            "[\\?&]utm_[^&]+" : "",
+            "[\\?&]wt_zmc=[^&]+" : "",
+            "[\\?&]wtmc=[^&]+" : ""
     }
+}
+```
 
 If you want to use a proxy or define your own replacements, you have to edit the
 configuration file manually. After the configuration file is generated, you can
@@ -84,7 +86,9 @@ daemon.
 
 # Copyright
 
-    Copyright © 2018 tastytea <tastytea@tastytea.de>.
-    License GPLv3: GNU GPL version 3 <https://www.gnu.org/licenses/gpl-3.0.html>.
-    This program comes with ABSOLUTELY NO WARRANTY. This is free software,
-    and you are welcome to redistribute it under certain conditions.
+```
+Copyright © 2018 tastytea <tastytea@tastytea.de>.
+License GPLv3: GNU GPL version 3 <https://www.gnu.org/licenses/gpl-3.0.html>.
+This program comes with ABSOLUTELY NO WARRANTY. This is free software,
+and you are welcome to redistribute it under certain conditions.
+```
