@@ -348,7 +348,7 @@ const bool Listener::register_app()
     ret = _masto->register_app1("expandurl-mastodon",
                                 "urn:ietf:wg:oauth:2.0:oob",
                                 "read write",
-                                "https://github.com/tastytea/expandurl-mastodon",
+                                "https://git.schlomp.space/tastytea/expandurl-mastodon",
                                 client_id,
                                 client_secret,
                                 url);

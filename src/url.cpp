@@ -69,6 +69,7 @@ const string expand(const string &url)
     catch (const std::exception &e)
     {
         syslog(LOG_ERR, "%s", e.what());
+        // TODO: Do something when: "Couldn't resolve host …"
         syslog(LOG_NOTICE, "The previous error is ignored.");
     }
 
