@@ -66,11 +66,6 @@ Listener::Listener()
 
 Listener::~Listener()
 {
-    if (!configfile.write())
-    {
-        syslog(LOG_ERR, "Could not write %s.",
-               configfile.get_filepath().c_str());
-    }
 }
 
 const void Listener::read_config()
@@ -122,6 +117,12 @@ const void Listener::start()
 
 const void Listener::stop()
 {
+    if (!configfile.write())
+    {
+        syslog(LOG_ERR, "Could not write %s.",
+               configfile.get_filepath().c_str());
+    }
+
     if (_ptr)
     {
         _ptr->cancel_stream();
