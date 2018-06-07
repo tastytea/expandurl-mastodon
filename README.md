@@ -3,7 +3,7 @@
 If you want the bot to expand an URL, reply to the post with the URL in it and
 mention the bot account (`@expandurl@botsin.space` for example).
 
-![Example screenshot](https://user-images.githubusercontent.com/3681516/39963736-908e3eea-5663-11e8-9a9c-55ca74279235.jpg)
+![Example screenshot](https://doc.schlomp.space/expandurl-mastodon/expandurl_screenshot.jpg)
 
 This bot uses the same visibility as you, but posts unlisted instead of public.
 It retains the sensitive flag and spoiler warnings.
@@ -37,14 +37,18 @@ https://schlomp.space/tastytea/expandurl-mastodon/releases
 
 ### Development version
 
-    git clone https://schlomp.space/tastytea/expandurl-mastodon.git
+```SH
+git clone https://schlomp.space/tastytea/expandurl-mastodon.git
+```
 
 ## Compile
 
-    mkdir build
-    cd build/
-    cmake ..
-    make
+```SH
+mkdir build
+cd build/
+cmake ..
+make
+```
 
 Install with `make install`.
 
@@ -86,7 +90,7 @@ daemon.
 
 # Copyright
 
-```
+```PLAIN
 Copyright © 2018 tastytea <tastytea@tastytea.de>.
 License GPLv3: GNU GPL version 3 <https://www.gnu.org/licenses/gpl-3.0.html>.
 This program comes with ABSOLUTELY NO WARRANTY. This is free software,
