@@ -165,7 +165,7 @@ const std::vector<Easy::Notification> Listener::get_new_messages()
     else
     {
         // If the last keep-alive packet was received 25 seconds or more ago
-        if (duration_cast<seconds>(lastping - system_clock::now()).count() >= 25)
+        if (duration_cast<seconds>(system_clock::now() - lastping).count() >= 25)
         {
             lastping = system_clock::now();
             syslog(LOG_NOTICE, "Detected broken connection.");
