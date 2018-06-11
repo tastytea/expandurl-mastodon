@@ -20,6 +20,7 @@
 #include <mutex>
 #include <sstream>
 #include <syslog.h>
+#include <chrono>
 #include "version.hpp"
 #include "expandurl-mastodon.hpp"
 
@@ -139,16 +140,15 @@ const void Listener::stop()
 
 const std::vector<Easy::Notification> Listener::get_new_messages()
 {
+    using namespace std::chrono;
+
     std::vector<Easy::Notification> v;
-    static std::uint_fast8_t count_empty = 0;
+    static system_clock::time_point lastping = system_clock::now();
 
     std::lock_guard<std::mutex> lock(_ptr->get_mutex());
     if (!_stream.empty())
     {
-        const string buffer = _stream;
-        _stream.clear();
-
-        for (const Easy::stream_event &event : Easy::parse_stream(buffer))
+        for (const Easy::stream_event &event : Easy::parse_stream(_stream))
         {
             if (event.first == Easy::event_type::Notification)
             {
@@ -159,15 +159,15 @@ const std::vector<Easy::Notification> Listener::get_new_messages()
                 }
             }
         }
-        count_empty = 0;
+        _stream.clear();
+        lastping = system_clock::now();
     }
     else
     {
-        // If we got an empty message 5 times, set state to not running
-        ++count_empty;
-        if (count_empty > 5)
+        // If the last keep-alive packet was received 25 seconds or more ago
+        if (duration_cast<seconds>(lastping - system_clock::now()).count() >= 25)
         {
-            count_empty = 0;
+            lastping = system_clock::now();
             syslog(LOG_NOTICE, "Detected broken connection.");
             _running = false;
         }

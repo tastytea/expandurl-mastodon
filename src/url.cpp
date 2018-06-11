@@ -110,7 +110,7 @@ const void init_replacements()
         const std::array<const replace_pair, 5> replace_array =
         {{
             { "[\\?&]utm_[^&]+", "" },                      // Google
-            { "[\\?&]wt_?[^&]+", "" },                       // Twitter?
+            { "[\\?&]wt_?[^&]+", "" },                      // Twitter?
             { "[\\?&]__twitter_impression=[^&]+", "" },     // Twitter?
             { "//amp\\.", "//" }                            // AMP
         }};
