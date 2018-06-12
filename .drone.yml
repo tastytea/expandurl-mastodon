@@ -1,4 +1,11 @@
 pipeline:
+
+
+pipeline:
+  download:
+    image: plugins/download
+    source: https://schlomp.space/attachments/b3119713-4c05-4acc-9cb4-460b15e19279
+    destination: mastodon-cpp.deb
   build:
     image: debian:buster-slim
     pull: true
@@ -6,8 +13,6 @@ pipeline:
       - apt-get update
       - apt-get install -y build-essential cmake pkg-config
       - apt-get install -y libcurl4-openssl-dev libcurlpp-dev libjsoncpp-dev libxdg-basedir-dev
-      - apt-get install -y curl
-      - curl -so mastodon-cpp.deb https://schlomp.space/attachments/b3119713-4c05-4acc-9cb4-460b15e19279
       - dpkg -i mastodon-cpp.deb
       - mkdir -p build && cd build
       - cmake ..
