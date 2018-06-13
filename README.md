@@ -22,12 +22,12 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 ## Dependencies
 
  * Tested OS: Linux
- * C++ compiler (tested: gcc 6.4)
- * [cmake](https://cmake.org/) (tested: 3.9.6)
- * [curlpp](http://www.curlpp.org/) (tested: 0.8.1)
+ * C++ compiler (tested: gcc 6.4 / 7.3)
+ * [cmake](https://cmake.org/) (tested: 3.9)
+ * [curlpp](http://www.curlpp.org/) (tested: 0.8 / 0.7)
  * [mastodon-cpp](https://schlomp.space/tastytea/mastodon-cpp) (at least: 0.15.1)
- * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8.4)
- * [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2.0)
+ * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8 / 1.7)
+ * [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2)
 
 ## Get sourcecode
 
