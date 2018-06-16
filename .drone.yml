@@ -1,7 +1,7 @@
 pipeline:
   download:
     image: plugins/download
-    source: https://schlomp.space/attachments/b3119713-4c05-4acc-9cb4-460b15e19279
+    source: https://schlomp.space/attachments/dbc2b2b0-86c9-4aee-ac99-9cb9e91a82ed
     destination: mastodon-cpp.deb
   build:
     image: debian:buster-slim

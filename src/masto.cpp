@@ -230,42 +230,23 @@ Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
 const bool Listener::send_reply(const Easy::Status &to_status,
                                 const string &message)
 {
-    std::uint_fast16_t ret;
-    string answer;
-    const string id = std::to_string(to_status.id());
-    string strvisibility;
+    std::uint_fast16_t ret = 0;
 
-    switch (to_status.visibility())
+    Easy::Status new_status;
+    if (to_status.visibility() == Easy::visibility_type::Public)
     {
-        case Easy::visibility_type::Private:
-            strvisibility = "private";
-            break;
-        case Easy::visibility_type::Direct:
-            strvisibility = "direct";
-            break;
-        default:
-            strvisibility = "unlisted";
-            break;
+        new_status.visibility(Easy::visibility_type::Unlisted);
     }
-
-    Easy::parametermap parameters =
+    else
     {
-        { "in_reply_to_id", { id } },
-        { "visibility", { strvisibility } },
-        { "status", { '@' + to_status.account().acct() + ' ' + message } }
-    };
-
-    if (to_status.sensitive())
-    {
-        parameters.insert({ "sensitive", { "true" } });
+        new_status.visibility(to_status.visibility());
     }
+    new_status.in_reply_to_id(to_status.id());
+    new_status.content('@' + to_status.account().acct() + ' ' + message);
+    new_status.sensitive(to_status.sensitive());
+    new_status.spoiler_text(to_status.spoiler_text());
 
-    if (!to_status.spoiler_text().empty())
-    {
-        parameters.insert({ "spoiler_text", { to_status.spoiler_text() } });
-    }
-
-    ret = _masto->post(API::v1::statuses, parameters, answer);
+    _masto->send_toot(new_status, ret);
 
     if (ret == 0)
     {
