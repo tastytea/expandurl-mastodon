@@ -22,8 +22,8 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 ## Dependencies
 
  * Tested OS: Linux
- * C++ compiler (tested: gcc 6.4 / 7.3)
- * [cmake](https://cmake.org/) (tested: 3.9)
+ * C++ compiler (tested: gcc 6.3 / 7.3)
+ * [cmake](https://cmake.org/) (tested: 3.9 / 3.11)
  * [curlpp](http://www.curlpp.org/) (tested: 0.8 / 0.7)
  * [mastodon-cpp](https://schlomp.space/tastytea/mastodon-cpp) (at least: 0.17)
  * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8 / 1.7)
