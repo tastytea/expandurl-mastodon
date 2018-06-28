@@ -31,16 +31,20 @@ namespace curlopts = curlpp::options;
 
 const std::vector<string> get_urls(const string &html)
 {
-    const std::regex re_url("href=\"([^\"]+)\" rel");
+    const std::regex re_url("href=\\\\?\"([^\"\\\\]+)\\\\?\"([^>]+)");
     std::smatch match;
     string buffer = html;
     std::vector<string> v;
 
     while (std::regex_search(buffer, match, re_url))
     {
-        string url = Easy::unescape_html(match[1].str());
-        v.push_back(strip(expand(url)));
-        buffer = match.suffix().str();
+        // Add URL to vector if it is not a mention.#
+        if (match[2].str().find("mention") == std::string::npos)
+        {
+            string url = Easy::unescape_html(match[1].str());
+            v.push_back(strip(expand(url)));
+            buffer = match.suffix().str();
+        }
     }
 
     return v;
