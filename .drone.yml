@@ -8,7 +8,6 @@ pipeline:
   #   image: gcc:5
   #   pull: true
   #   commands:
-  #     - rm /usr/local/lib64/libstdc++.so.6
   #     - echo "deb http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list.d/stretch.list
   #     - echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list.d/buster.list
   #     - echo "APT::Default-Release \"jessie\";" >> /etc/apt/apt.conf.d/00default_release
