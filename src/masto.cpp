@@ -271,7 +271,7 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
         // Fetch full status
         ret = _masto->get(API::v1::search, {{ "q", { notif.status().url() }}},
                           answer);
-        if (ret > 0 || !Easy::Status(answer).valid())
+        if (ret > 0)
         {
             syslog(LOG_ERR, "Error %u: Could not fetch status (in %s).",
                    ret, __FUNCTION__);
