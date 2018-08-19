@@ -65,6 +65,7 @@ const string expand(const string &url)
         "Connection: close",
     });
     request.setOpt<curlopts::FollowLocation>(true);
+    request.setOpt(curlopts::Timeout(30));
 
     try
     {
