@@ -111,12 +111,14 @@ const void init_replacements()
     Json::Value &config = configfile.get_json();
     if (config["replace"].isNull())
     {
-        const std::array<const replace_pair, 5> replace_array =
+        const std::array<const replace_pair, 6> replace_array =
         {{
             { "[\\?&]utm_[^&]+", "" },                      // Google
             { "[\\?&]wt_?[^&]+", "" },                      // Twitter?
             { "[\\?&]__twitter_impression=[^&]+", "" },     // Twitter?
-            { "//amp\\.", "//" }                            // AMP
+            { "//amp\\.", "//" },                           // AMP
+            { "/amp/", "" },                                // AMP
+            { "[\\?&]service=amp", "" }                     // AMP
         }};
 
         for (const replace_pair &pair : replace_array)
