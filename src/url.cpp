@@ -43,8 +43,8 @@ const std::vector<string> get_urls(const string &html)
         {
             string url = Easy::unescape_html(match[1].str());
             v.push_back(strip(expand(url)));
-            buffer = match.suffix().str();
         }
+        buffer = match.suffix().str();
     }
 
     return v;
