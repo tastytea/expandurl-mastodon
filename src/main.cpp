@@ -57,7 +57,8 @@ int main(int argc, char *argv[])
 
     if (!configfile.read())
     {
-        syslog(LOG_WARNING, "Could not open %s.", configfile.get_filepath().c_str());
+        syslog(LOG_WARNING, "Could not open %s.",
+               configfile.get_filepath().c_str());
     }
     init_replacements();
 
@@ -89,11 +90,11 @@ int main(int argc, char *argv[])
         for (Easy::Notification &notif : new_messages)
         {
             syslog(LOG_DEBUG, "new message");
-            const std::uint_fast64_t id = listener.get_parent_id(notif);
-            syslog(LOG_DEBUG, "in_reply_to_id: %lu", id);
+            const string id = listener.get_parent_id(notif);
+            syslog(LOG_DEBUG, "in_reply_to_id: %s", id.c_str());
             Easy::Status status;
 
-            if (id > 0)
+            if (!id.empty())
             {
                 status = listener.get_status(id);
                 if (status.valid())
@@ -107,7 +108,8 @@ int main(int argc, char *argv[])
                     {
                         if (!listener.send_reply(notif.status(), message))
                         {
-                            syslog(LOG_ERR, "could not send reply to %lu", id);
+                            syslog(LOG_ERR, "could not send reply to %s",
+                                   id.c_str());
                         }
                     }
                     else

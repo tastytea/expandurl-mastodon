@@ -2,7 +2,7 @@ pipeline:
   download:
     image: plugins/download
     pull: true
-    source: https://schlomp.space/attachments/761761c0-b16b-491e-a6ae-18dca23e82dd
+    source: https://schlomp.space/attachments/5ab8f994-669a-47f8-8ac7-ed5902ad0339
     destination: mastodon-cpp.deb
   # gcc5:
   #   image: gcc:5

@@ -90,9 +90,9 @@ public:
 
     const std::vector<Easy::Notification> get_new_messages();
     const std::vector<Easy::Notification> catchup();
-    Easy::Status get_status(const std::uint_fast64_t &id);
+    Easy::Status get_status(const string &id);
     const bool send_reply(const Easy::Status &to_status, const string &message);
-    const std::uint_fast64_t get_parent_id(const Easy::Notification &notif);
+    const string get_parent_id(const Easy::Notification &notif);
 
     const bool stillrunning() const;
 

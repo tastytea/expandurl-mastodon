@@ -209,12 +209,12 @@ const std::vector<Easy::Notification> Listener::catchup()
     return v;
 }
 
-Mastodon::Easy::Status Listener::get_status(const std::uint_fast64_t &id)
+Mastodon::Easy::Status Listener::get_status(const string &id)
 {
     std::uint_fast16_t ret;
     string answer;
 
-    ret = _masto->get(API::v1::statuses_id, {{ "id", { std::to_string(id) }}},
+    ret = _masto->get(API::v1::statuses_id, {{ "id", { id }}},
                       answer);
     if (ret == 0)
     {
@@ -260,7 +260,7 @@ const bool Listener::send_reply(const Easy::Status &to_status,
     }
 }
 
-const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif)
+const string Listener::get_parent_id(const Easy::Notification &notif)
 {
     string answer;
     std::uint_fast16_t ret;
@@ -279,7 +279,7 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
         }
 
         ret = _masto->get(API::v1::statuses_id,
-                          {{ "id", { std::to_string(notif.status().id()) }}},
+                          {{ "id", { notif.status().id() }}},
                           answer);
 
         if (ret > 0)
@@ -290,11 +290,11 @@ const std::uint_fast64_t Listener::get_parent_id(const Easy::Notification &notif
         }
         else
         {
-            _config["last_id"] = std::to_string(notif.id());
+            _config["last_id"] = notif.id();
             const Easy::Status s(answer);
 
             // If parent is found, return ID; else retry
-            if (s.in_reply_to_id() != 0)
+            if (!s.in_reply_to_id().empty())
             {
                 return s.in_reply_to_id();
             }
