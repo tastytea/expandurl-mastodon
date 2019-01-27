@@ -9,12 +9,12 @@ pipeline:
   #   pull: true
   #   commands:
   #     - echo "deb http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list.d/stretch.list
-  #     - echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list.d/buster.list
+  #     - echo "deb http://deb.debian.org/debian sid main" >> /etc/apt/sources.list.d/sid.list
   #     - echo "APT::Default-Release \"jessie\";" >> /etc/apt/apt.conf.d/00default_release
   #     - apt-get update -q
   #     - apt-get install -qyt stretch cmake libjsoncpp-dev
   #     - apt-get install -qy libcurl4-openssl-dev libxdg-basedir-dev
-  #     - apt-get install -qy -t buster libcurlpp-dev
+  #     - apt-get install -qy -t sid libcurlpp-dev
   #     - dpkg -i mastodon-cpp.deb
   #     - rm -rf build && mkdir -p build && cd build
   #     - cmake ..
@@ -25,12 +25,12 @@ pipeline:
     pull: true
     commands:
       - echo "deb http://deb.debian.org/debian stretch main" >> /etc/apt/sources.list.d/stretch.list
-      - echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list.d/buster.list
+      - echo "deb http://deb.debian.org/debian sid main" >> /etc/apt/sources.list.d/sid.list
       - echo "APT::Default-Release \"jessie\";" >> /etc/apt/apt.conf.d/00default_release
       - apt-get update -q
       - apt-get install -qyt stretch cmake libjsoncpp-dev
       - apt-get install -qy libcurl4-openssl-dev libxdg-basedir-dev
-      - apt-get install -qy -t buster libcurlpp-dev
+      - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build
       - cmake ..
@@ -40,11 +40,11 @@ pipeline:
     image: gcc:7
     pull: true
     commands:
-      - echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list.d/buster.list
+      - echo "deb http://deb.debian.org/debian sid main" >> /etc/apt/sources.list.d/sid.list
       - echo "APT::Default-Release \"stretch\";" >> /etc/apt/apt.conf.d/00default_release
       - apt-get update -q
       - apt-get install -qy cmake libcurl4-openssl-dev libjsoncpp-dev libxdg-basedir-dev
-      - apt-get install -qy -t buster libcurlpp-dev
+      - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build
       - cmake ..
@@ -54,11 +54,11 @@ pipeline:
     image: gcc:8
     pull: true
     commands:
-      - echo "deb http://deb.debian.org/debian buster main" >> /etc/apt/sources.list.d/buster.list
+      - echo "deb http://deb.debian.org/debian sid main" >> /etc/apt/sources.list.d/sid.list
       - echo "APT::Default-Release \"stretch\";" >> /etc/apt/apt.conf.d/00default_release
       - apt-get update -q
       - apt-get install -qy cmake libcurl4-openssl-dev libjsoncpp-dev libxdg-basedir-dev
-      - apt-get install -qy -t buster libcurlpp-dev
+      - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build
       - cmake ..
