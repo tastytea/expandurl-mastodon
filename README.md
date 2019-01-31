@@ -52,6 +52,10 @@ cmake ..
 make
 ```
 
+cmake options:
+* `-DCMAKE_BUILD_TYPE=Debug` for a debug build
+* `-DWITH_MAN=NO` to not compile the manpage
+
 Install with `make install`.
 
 # Usage
