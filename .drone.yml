@@ -17,7 +17,7 @@ pipeline:
       - echo "deb http://deb.debian.org/debian sid main" >> /etc/apt/sources.list.d/sid.list
       - apt-get update -q
       - apt-get install -qy build-essential cmake pkg-config
-      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev
+      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev asciidoc
       - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build
@@ -43,7 +43,7 @@ pipeline:
       - apt-get update -q
       - apt-get install -qy build-essential cmake pkg-config
       - apt-get install -qy -t xenial g++-7
-      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev
+      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev asciidoc
       - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build
@@ -69,7 +69,7 @@ pipeline:
       - apt-get update -q
       - apt-get install -qy build-essential cmake pkg-config
       - apt-get install -qy -t xenial g++-8
-      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev
+      - apt-get install -qy libjsoncpp-dev libcurl4-openssl-dev libxdg-basedir-dev asciidoc
       - apt-get install -qy -t sid libcurlpp-dev
       - dpkg -i mastodon-cpp.deb
       - rm -rf build && mkdir -p build && cd build

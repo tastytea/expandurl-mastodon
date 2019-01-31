@@ -21,13 +21,15 @@ or to [@tastytea@soc.ialis.me](https://soc.ialis.me/@tastytea).
 
 ## Dependencies
 
- * Tested OS: Linux
- * C++ compiler (tested: gcc 6/7/8)
- * [cmake](https://cmake.org/) (tested: 3.9 / 3.11)
- * [curlpp](http://www.curlpp.org/) (tested: 0.8)
- * [mastodon-cpp](https://schlomp.space/tastytea/mastodon-cpp) (at least: 0.30)
- * [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8 / 1.7)
- * [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2)
+* Tested OS: Linux
+* C++ compiler (tested: gcc 6/7/8)
+* [cmake](https://cmake.org/) (tested: 3.9 / 3.11)
+* [curlpp](http://www.curlpp.org/) (tested: 0.8)
+* [mastodon-cpp](https://schlomp.space/tastytea/mastodon-cpp) (at least: 0.30)
+* [jsoncpp](https://github.com/open-source-parsers/jsoncpp) (tested: 1.8 / 1.7)
+* [libxdg-basedir](http://repo.or.cz/w/libxdg-basedir.git) (tested: 1.2)
+* Optional:
+    * Manpage: [asciidoc](http://asciidoc.org/) (tested: 8.6)
 
 ## Get sourcecode
 
@@ -54,39 +56,7 @@ Install with `make install`.
 
 # Usage
 
-**The config file has changed from cfg to JSON in 0.4.0.**
-
-Start expandurl-mastodon without parameters.
-
-If no config file is found, you will be asked to provide your account address
-and an access token is generated. The config file can be found in
-`${HOME}/.config/expandurl-mastodon.json` and looks like this:
-
-```JSON
-{
-    "account": "expandurl@example.social",
-    "access_token": "abc123",
-    "proxy":
-    {
-        "url": "socks5h://[::1]:1080/",
-        "user": "user23",
-        "password": "supersecure"
-    },
-    "replace" :
-    {
-            "//amp\\." : "//",
-            "[\\?&]__twitter_impression=[^&]+" : "",
-            "[\\?&]utm_[^&]+" : "",
-            "[\\?&]wt_zmc=[^&]+" : "",
-            "[\\?&]wtmc=[^&]+" : ""
-    }
-}
-```
-
-If you want to use a proxy or define your own replacements, you have to edit the
-configuration file manually. After the configuration file is generated, you can
-start expandurl-mastodon as
-daemon.
+Have a look at the [manpage](https://schlomp.space/tastytea/expandurl-mastodon/src/branch/master/expandurl-mastodon.1.adoc).
 
 # Copyright
 

@@ -1,0 +1,79 @@
+= expandurl-mastodon(1)
+:Author:        tastytea
+:Email:         tastytea@tastytea.de
+:Date:          2019-01-31
+:Revision:      0.0.0
+:man source:    expandurl-mastodon
+:man version:   {revision}
+:man manual:    General Commands Manual
+
+== NAME
+
+expandurl-mastodon - Mastodon bot that expands shortened URLs.
+
+== SYNOPSIS
+
+*expandurl-mastodon*
+
+== DESCRIPTION
+
+If you want the bot to expand an URL, reply to the post with the URL in it and
+mention the bot account.
+
+This bot uses the same visibility as you, but posts unlisted instead of public.
+It retains the sensitive flag and spoiler warnings.
+
+Some tracking parameters, like those beginning with
+https://en.wikipedia.org/wiki/UTM_parameters[utm_] are stripped. It also tries
+to rewrite https://en.wikipedia.org/wiki/Accelerated_Mobile_Pages[AMP] URLs to
+point at the real webpages.
+
+== CONFIGURATION
+
+If no config file is found, you will be asked to provide your account address
+and an access token is generated. The config file can be found in
+`${XDG_CONFIG_HOME}/expandurl-mastodon.json` and looks like this:
+
+[source,json]
+----
+{
+    "account": "expandurl@example.social",
+    "access_token": "abc123",
+    "proxy":
+    {
+        "url": "socks5h://[::1]:1080/",
+        "user": "user23",
+        "password": "supersecure"
+    },
+    "replace" :
+    {
+            "//amp\\." : "//",
+            "[\\?&]__twitter_impression=[^&]+" : "",
+            "[\\?&]utm_[^&]+" : "",
+            "[\\?&]wt_zmc=[^&]+" : "",
+            "[\\?&]wtmc=[^&]+" : ""
+    }
+}
+----
+
+If you want to use a proxy or define your own replacements, you have to edit the
+configuration file manually. After the configuration file is generated, you can
+start expandurl-mastodon as daemon.
+
+== FILES
+
+[format="csv",frame="none",grid="none",cols=">,<"]
+|======
+Configuration file:,`${XDG_CONFIG_HOME}/expandurl-mastodon.json`
+|======
+
+`${XDG_CONFIG_HOME}` is usually `~/.config`.
+
+== REPORTING BUGS
+
+[format="csv",frame="none",grid="none",cols=">,<"]
+|======
+Bugtracker:,https://schlomp.space/tastytea/expandurl-mastodon/issues
+E-mail:,tastytea@tastytea.de
+Fediverse:,https://soc.ialis.me/@tastytea
+|======
