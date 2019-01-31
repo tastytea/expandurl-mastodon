@@ -49,7 +49,7 @@ target_link_libraries(expandurl-mastodon
 install(TARGETS expandurl-mastodon DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 set(WITH_MAN "YES" CACHE STRING "WITH_MAN defaults to \"YES\"")
-if (WITH_MANPAGE)
+if (WITH_MAN)
     add_custom_command(OUTPUT "${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.1"
                        WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
                        DEPENDS "${CMAKE_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.1.adoc"
