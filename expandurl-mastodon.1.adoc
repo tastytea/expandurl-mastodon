@@ -1,7 +1,7 @@
 = expandurl-mastodon(1)
 :Author:        tastytea
 :Email:         tastytea@tastytea.de
-:Date:          2019-01-31
+:Date:          2019-04-12
 :Revision:      0.0.0
 :man source:    expandurl-mastodon
 :man version:   {revision}
@@ -62,18 +62,14 @@ start expandurl-mastodon as daemon.
 
 == FILES
 
-[format="csv",frame="none",grid="none",cols=">,<"]
-|======
-Configuration file:,`${XDG_CONFIG_HOME}/expandurl-mastodon.json`
-|======
+- *Configuration file*: `${XDG_CONFIG_HOME}/expandurl-mastodon.json`
 
 `${XDG_CONFIG_HOME}` is usually `~/.config`.
 
 == REPORTING BUGS
 
-[format="csv",frame="none",grid="none",cols=">,<"]
-|======
-Bugtracker:,https://schlomp.space/tastytea/expandurl-mastodon/issues
-E-mail:,tastytea@tastytea.de
-Fediverse:,https://soc.ialis.me/@tastytea
-|======
+Bugtracker: https://schlomp.space/tastytea/expandurl-mastodon/issues
+
+E-mail: tastytea@tastytea.de
+
+Fediverse: https://soc.ialis.me/@tastytea
