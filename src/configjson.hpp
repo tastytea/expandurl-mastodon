@@ -1,5 +1,5 @@
 /*  This file is part of expandurl-mastodon.
- *  Copyright © 2018 tastytea <tastytea@tastytea.de>
+ *  Copyright © 2018, 2019 tastytea <tastytea@tastytea.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -43,14 +43,14 @@ public:
      *
      *  @return `true` on success
      */
-    const bool read();
+    bool read();
 
     /*!
      *  @brief  Write the file
      *
      *  @return `true` on success
      */
-    const bool write();
+    bool write();
 
     /*!
      *  @brief  Returns a reference to the config as Json::Value

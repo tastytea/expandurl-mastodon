@@ -1,5 +1,5 @@
 /*  This file is part of expandurl-mastodon.
- *  Copyright © 2018 tastytea <tastytea@tastytea.de>
+ *  Copyright © 2018, 2019 tastytea <tastytea@tastytea.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ const std::vector<string> get_urls(const string &html)
         // Add URL to vector if it is not a mention.#
         if (match[2].str().find("mention") == std::string::npos)
         {
-            string url = Easy::unescape_html(match[1].str());
+            string url = unescape_html(match[1].str());
             v.push_back(strip(expand(url)));
         }
         buffer = match.suffix().str();
@@ -106,7 +106,7 @@ const string strip(const string &url)
     return newurl;
 }
 
-const void init_replacements()
+void init_replacements()
 {
     using replace_pair = std::pair<const std::string, const std::string>;
     Json::Value &config = configfile.get_json();

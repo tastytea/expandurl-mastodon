@@ -1,5 +1,5 @@
 /*  This file is part of expandurl-mastodon.
- *  Copyright © 2018 tastytea <tastytea@tastytea.de>
+ *  Copyright © 2018, 2019 tastytea <tastytea@tastytea.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,14 +27,14 @@
 #include <jsoncpp/json/json.h>
 #include "configjson.hpp"
 
+using namespace Mastodon;
+
 using std::string;
 using Mastodon::API;
-using Mastodon::Easy;
 
 extern ConfigJSON configfile;
 
 void signal_handler(int signum);
-
 
 /*!
  *  @brief  Extract URLs from HTML
@@ -54,7 +54,7 @@ const string expand(const string &url);
 
 /*!
  *  @brief  Filters out tracking stuff
- *  
+ *
  *          Currently removes all arguments beginning with `utm_`
  *
  *  @param  url     URL to filter
@@ -70,7 +70,7 @@ const string strip(const string &url);
  *          inserted.
  *
  */
-const void init_replacements();
+void init_replacements();
 
 
 class Listener
@@ -82,24 +82,24 @@ public:
     /*!
      *  @brief  Starts listening on Mastodon
      */
-    const void start();
+    void start();
     /*!
      *  @brief  Stops listening on Mastodon
      */
-    const void stop();
+    void stop();
 
     const std::vector<Easy::Notification> get_new_messages();
     const std::vector<Easy::Notification> catchup();
     Easy::Status get_status(const string &id);
-    const bool send_reply(const Easy::Status &to_status, const string &message);
+    bool send_reply(const Easy::Status &to_status, const string &message);
     const string get_parent_id(const Easy::Notification &notif);
 
-    const bool stillrunning() const;
+    bool stillrunning() const;
 
 private:
     string _instance;
     string _access_token;
-    std::unique_ptr<Easy> _masto;
+    std::unique_ptr<Easy::API> _masto;
     string _stream;
     std::unique_ptr<API::http> _ptr;
     std::thread _thread;
@@ -109,10 +109,10 @@ private:
     string _proxy_password;
     Json::Value &_config;
 
-    const void read_config();
-    const bool write_config();
-    const bool register_app();
-    const void set_proxy(Easy &masto);
+    void read_config();
+    bool write_config();
+    bool register_app();
+    void set_proxy(Easy::API &masto);
 };
 
 #endif  // EXPANDURL_MASTODON_HPP

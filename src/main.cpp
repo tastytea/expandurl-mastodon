@@ -1,5 +1,5 @@
 /*  This file is part of expandurl-mastodon.
- *  Copyright © 2018 tastytea <tastytea@tastytea.de>
+ *  Copyright © 2018, 2019 tastytea <tastytea@tastytea.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,14 +18,16 @@
 #include <chrono>
 #include <csignal>
 #include <regex>
+#include <numeric>
 #include <syslog.h>
 #include <unistd.h> // getuid()
 #include <curlpp/cURLpp.hpp>
 #include "configjson.hpp"
 #include "expandurl-mastodon.hpp"
 
+using namespace Mastodon;
+
 using std::string;
-using Mastodon::Easy;
 
 bool running = true;
 ConfigJSON configfile("expandurl-mastodon.json");
@@ -50,7 +52,7 @@ void signal_handler(int signum)
     }
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
@@ -99,11 +101,11 @@ int main(int argc, char *argv[])
                 status = listener.get_status(id);
                 if (status.valid())
                 {
-                    string message = "";
-                    for (const string &url : get_urls(status.content()))
-                    {
-                        message += url + " \n";
-                    }
+                    const std::vector<string> vec = get_urls(status.content());
+                    const string message =
+                        std::accumulate(vec.begin(), vec.end(), string(),
+                                        [](const string &s1, const string s2)
+                                        { return s1 + s2 + " \n"; });
                     if (!message.empty())
                     {
                         if (!listener.send_reply(notif.status(), message))

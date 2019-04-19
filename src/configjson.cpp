@@ -1,5 +1,5 @@
 /*  This file is part of expandurl-mastodon.
- *  Copyright © 2018 tastytea <tastytea@tastytea.de>
+ *  Copyright © 2018, 2019 tastytea <tastytea@tastytea.de>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ ConfigJSON::ConfigJSON(const string &filename, const string &subdir)
     _filepath += '/' + filename;
 }
 
-const bool ConfigJSON::read()
+bool ConfigJSON::read()
 {
     std::ifstream file(_filepath);
     if (file.is_open())
@@ -60,7 +60,7 @@ const bool ConfigJSON::read()
     }
 }
 
-const bool ConfigJSON::write()
+bool ConfigJSON::write()
 {
     std::ofstream file(_filepath);
     if (file.is_open())
