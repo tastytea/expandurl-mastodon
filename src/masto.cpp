@@ -82,12 +82,8 @@ void Listener::read_config()
 
 void Listener::start()
 {
-    Easy::API masto(_instance, _access_token);
     _running = true;
-
-    masto.set_useragent(string("expandurl-mastodon/") + global::version);
-    set_proxy(masto);
-    masto.get_stream(Mastodon::API::v1::streaming_user, _ptr, _stream);
+    _masto->get_stream(API::v1::streaming_user, _ptr, _stream);
 
     syslog(LOG_NOTICE, "Connecting to %s ...", _instance.c_str());
 }
