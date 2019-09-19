@@ -120,7 +120,7 @@ const std::vector<Easy::Notification> Listener::get_new_messages()
     std::lock_guard<std::mutex> lock(_ptr->get_mutex());
     if (!_stream.empty())
     {
-        for (const Easy::stream_event &event : Easy::parse_stream(_stream))
+        for (const Easy::stream_event_type &event : Easy::parse_stream(_stream))
         {
             if (event.type == Easy::event_type::Notification)
             {

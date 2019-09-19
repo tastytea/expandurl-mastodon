@@ -2,7 +2,7 @@ pipeline:
   download:
     image: plugins/download
     pull: true
-    source: https://schlomp.space/attachments/e1c1e64b-1192-4037-aad4-95238ad648b0
+    source: https://schlomp.space/tastytea/mastodon-cpp/releases/download/0.106.0/libmastodon-cpp_0.106.0-0_amd64.deb
     destination: mastodon-cpp.deb
 
   gcc6:
